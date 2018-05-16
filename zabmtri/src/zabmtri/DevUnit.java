@@ -17,6 +17,8 @@ public class DevUnit {
 		};
 		DbCompare compare = new DbCompare(dev, alpha, beta, target);
 		compare.start();
+		
+		new GlAccountExport().execute();
 
 		tc = System.currentTimeMillis() - tc;
 		System.out.println(String.format("finished : %,d ms", tc));

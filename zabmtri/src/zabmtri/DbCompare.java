@@ -15,6 +15,9 @@ public class DbCompare {
 
 	public CompareGlAccount compareGlAccount;
 	public CompareItem compareItem;
+	private CompareWarehs compareWarehs;
+	private CompareCustomer compareCustomer;
+	private CompareVendor compareVendor;
 
 	public DbCompare(IMainForm form, String alpha, String beta, String target) {
 		this.form = form;
@@ -24,12 +27,18 @@ public class DbCompare {
 
 		this.compareGlAccount = new CompareGlAccount(this);
 		this.compareItem = new CompareItem(this);
+		this.compareWarehs = new CompareWarehs(this);
+		this.compareCustomer = new CompareCustomer(this);
+		this.compareVendor = new CompareVendor(this);
 	}
 
 	public void start() {
 		try {
 			compareGlAccount.start();
 			compareItem.start();
+			compareWarehs.start();
+			compareCustomer.start();
+			compareVendor.start();
 			
 			form.setProgressText("Proses selesai");
 		} catch (Exception e) {

@@ -33,12 +33,12 @@ public class CompareItem {
 	}
 
 	private void generateReport() throws IOException {
-		File file = new File(Util.outputFile("item-report.xlsx"));
+		File file = new File(Util.outputFile("report-item.xlsx"));
 		OutputStream os = new FileOutputStream(file);
 		try {
 			Workbook wb = new XSSFWorkbook();
 
-			Sheet sheet = wb.createSheet("Akun");
+			Sheet sheet = wb.createSheet("Barang");
 
 			// sheet.setColumnWidth(0, 6000);
 

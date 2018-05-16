@@ -15,16 +15,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import zabmtri.entity.EGlAccount;
+import zabmtri.entity.EVendor;
 
-public class CompareGlAccount {
+public class CompareVendor {
 
 	private DbCompare owner;
-	private ArrayList<Pair<EGlAccount>> data;
+	private ArrayList<Pair<EVendor>> data;
 
-	public CompareGlAccount(DbCompare owner) {
+	public CompareVendor(DbCompare owner) {
 		this.owner = owner;
-		this.data = new ArrayList<Pair<EGlAccount>>();
+		this.data = new ArrayList<Pair<EVendor>>();
 	}
 
 	public void start() throws SQLException, IOException {
@@ -33,17 +33,17 @@ public class CompareGlAccount {
 	}
 
 	private void generateReport() throws IOException {
-		File file = new File(Util.outputFile("report-glaccount.xlsx"));
+		File file = new File(Util.outputFile("report-vendor.xlsx"));
 		OutputStream os = new FileOutputStream(file);
 		try {
 			Workbook wb = new XSSFWorkbook();
 
-			Sheet sheet = wb.createSheet("Akun");
+			Sheet sheet = wb.createSheet("Barang");
 
 			// sheet.setColumnWidth(0, 6000);
 
 			Row header = sheet.createRow(0);
-			header.createCell(0).setCellValue("No. Akun");
+			header.createCell(0).setCellValue("No. Barang");
 			header.createCell(1).setCellValue("Nama");
 			header.createCell(2).setCellValue(CApp.ALPHA);
 			header.createCell(3).setCellValue(CApp.BETA);
@@ -51,14 +51,14 @@ public class CompareGlAccount {
 
 			for (int i = 0; i < data.size(); i++) {
 				Row row = sheet.createRow(i + 1);
-				Pair<EGlAccount> p = data.get(i);
+				Pair<EVendor> p = data.get(i);
 
-				row.createCell(0).setCellValue(p.any().glaccount);
-				row.createCell(1).setCellValue(p.any().accountname);
+				row.createCell(0).setCellValue(p.any().personno);
+				row.createCell(1).setCellValue(p.any().name);
 				row.createCell(2).setCellValue(Util.booleanText(p.onAlpha()));
 				row.createCell(3).setCellValue(Util.booleanText(p.onBeta()));
 				if (p.onBoth()) {
-					row.createCell(4).setCellValue(Util.booleanText(p.hasEquals("accountname")));
+					row.createCell(4).setCellValue(Util.booleanText(p.hasEquals("name")));
 				}
 			}
 
@@ -72,20 +72,19 @@ public class CompareGlAccount {
 
 	private void loadData() throws SQLException {
 		ResultSet rs;
-
-		String sql = "SELECT * FROM glaccnt ORDER BY glaccount";
+		String sql = "SELECT First 1 * FROM persondata WHERE persontype = 1";
 		
 		rs = owner.alpha.createStatement().executeQuery(sql);
-		List<EGlAccount> alpha = EGlAccount.readAll(rs);
+		List<EVendor> alpha = EVendor.readAll(rs);
 
 		rs = owner.beta.createStatement().executeQuery(sql);
-		List<EGlAccount> beta = EGlAccount.readAll(rs);
+		List<EVendor> beta = EVendor.readAll(rs);
 
-		for (EGlAccount a : alpha) {
-			Pair<EGlAccount> p = new Pair<EGlAccount>();
+		for (EVendor a : alpha) {
+			Pair<EVendor> p = new Pair<EVendor>();
 			p.alpha = a;
 
-			EGlAccount b = find(beta, a.glaccount);
+			EVendor b = find(beta, a.personno);
 			if (b != null) {
 				p.beta = b;
 				beta.remove(b);
@@ -94,16 +93,16 @@ public class CompareGlAccount {
 			data.add(p);
 		}
 
-		for (EGlAccount b : beta) {
-			Pair<EGlAccount> p = new Pair<EGlAccount>();
+		for (EVendor b : beta) {
+			Pair<EVendor> p = new Pair<EVendor>();
 			p.beta = b;
 			data.add(p);
 		}
 	}
 
-	private EGlAccount find(List<EGlAccount> list, String value) {
-		for (EGlAccount r : list) {
-			if (value.equals(r.glaccount)) {
+	private EVendor find(List<EVendor> list, String value) {
+		for (EVendor r : list) {
+			if (value.equals(r.personno)) {
 				return r;
 			}
 		}
