@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +17,9 @@ import zabmtri.entity.EWarehs;
 
 public class CompareWarehs {
 
-	private DbCompare owner;
 	private ArrayList<Pair<EWarehs>> data;
 
-	public CompareWarehs(DbCompare owner) {
-		this.owner = owner;
-		this.data = new ArrayList<Pair<EWarehs>>();
-	}
-
-	public void start() throws SQLException, IOException {
+	public void start() throws IOException {
 		loadData();
 		generateReport();
 	}
@@ -66,15 +58,11 @@ public class CompareWarehs {
 		}
 	}
 
-	private void loadData() throws SQLException {
-		ResultSet rs;
-		String sql = "SELECT * FROM warehs ORDER BY name";
-		
-		rs = owner.alpha.createStatement().executeQuery(sql);
-		List<EWarehs> alpha = EWarehs.readAll(rs);
+	private void loadData() {
+		data = new ArrayList<Pair<EWarehs>>();
 
-		rs = owner.beta.createStatement().executeQuery(sql);
-		List<EWarehs> beta = EWarehs.readAll(rs);
+		List<EWarehs> alpha = AppData.alphaWarehs;
+		List<EWarehs> beta = AppData.betaWarehs;
 
 		for (EWarehs a : alpha) {
 			Pair<EWarehs> p = new Pair<EWarehs>();

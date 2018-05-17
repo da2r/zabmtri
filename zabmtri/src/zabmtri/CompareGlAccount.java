@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +17,9 @@ import zabmtri.entity.EGlAccount;
 
 public class CompareGlAccount {
 
-	private DbCompare owner;
-	private ArrayList<Pair<EGlAccount>> data;
+	private List<Pair<EGlAccount>> data;
 
-	public CompareGlAccount(DbCompare owner) {
-		this.owner = owner;
-		this.data = new ArrayList<Pair<EGlAccount>>();
-	}
-
-	public void start() throws SQLException, IOException {
+	public void start() throws IOException {
 		loadData();
 		generateReport();
 	}
@@ -70,17 +62,12 @@ public class CompareGlAccount {
 		}
 	}
 
-	private void loadData() throws SQLException {
-		ResultSet rs;
-
-		String sql = "SELECT * FROM glaccnt ORDER BY glaccount";
+	private void loadData() {
+		data = new ArrayList<Pair<EGlAccount>>();
+				
+		List<EGlAccount> alpha = AppData.alphaGlAccount;
+		List<EGlAccount> beta = AppData.betaGlAccount;
 		
-		rs = owner.alpha.createStatement().executeQuery(sql);
-		List<EGlAccount> alpha = EGlAccount.readAll(rs);
-
-		rs = owner.beta.createStatement().executeQuery(sql);
-		List<EGlAccount> beta = EGlAccount.readAll(rs);
-
 		for (EGlAccount a : alpha) {
 			Pair<EGlAccount> p = new Pair<EGlAccount>();
 			p.alpha = a;

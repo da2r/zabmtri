@@ -19,13 +19,7 @@ import zabmtri.entity.ECustomer;
 
 public class CompareCustomer {
 
-	private DbCompare owner;
 	private ArrayList<Pair<ECustomer>> data;
-
-	public CompareCustomer(DbCompare owner) {
-		this.owner = owner;
-		this.data = new ArrayList<Pair<ECustomer>>();
-	}
 
 	public void start() throws SQLException, IOException {
 		loadData();
@@ -71,13 +65,15 @@ public class CompareCustomer {
 	}
 
 	private void loadData() throws SQLException {
+		data = new ArrayList<Pair<ECustomer>>();
+		
 		ResultSet rs;
 		String sql = "SELECT First 1 * FROM persondata WHERE persontype = 0";
 		
-		rs = owner.alpha.createStatement().executeQuery(sql);
+		rs = AppData.alpha.createStatement().executeQuery(sql);
 		List<ECustomer> alpha = ECustomer.readAll(rs);
 
-		rs = owner.beta.createStatement().executeQuery(sql);
+		rs = AppData.beta.createStatement().executeQuery(sql);
 		List<ECustomer> beta = ECustomer.readAll(rs);
 
 		for (ECustomer a : alpha) {

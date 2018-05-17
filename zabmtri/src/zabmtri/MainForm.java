@@ -53,8 +53,8 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 			String beta = "192.168.1.202/3051:C:\\Program Files\\CPSSoft\\ACCURATE4 deluxe 1423\\SAMPLE\\SAMPLE.GDB";
 			String target = "192.168.1.202/3051:C:\\Documents and Settings\\herman\\Desktop\\TEST2.GDB";
 
-			DbCompare compare = new DbCompare(this, alpha, beta, target);
-			compare.start();
+//			CompareData compare = new CompareData(this, alpha, beta, target);
+//			compare.start();
 		}
 	}
 

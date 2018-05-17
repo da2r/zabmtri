@@ -1,5 +1,7 @@
 package zabmtri.entity;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,14 +17,25 @@ public class EWarehs {
 	public String pic;
 	public Integer suspended;
 
-	
-	public static List<EWarehs> readAll(ResultSet rs) throws SQLException {
-		List<EWarehs> result = new ArrayList<EWarehs>();
-		while (rs.next()) {
-			result.add(EWarehs.read(rs));
+	public static List<EWarehs> readAll(Connection conn) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT warehs.* FROM warehs ");
+			sql.append("ORDER BY warehs.name");
+
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+
+			List<EWarehs> result = new ArrayList<EWarehs>();
+			while (rs.next()) {
+				result.add(EWarehs.read(rs));
+			}
+
+			return result;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
 		}
-		
-		return result;
 	}
 
 	public static EWarehs read(ResultSet rs) throws SQLException {

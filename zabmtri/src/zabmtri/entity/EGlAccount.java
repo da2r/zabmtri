@@ -1,7 +1,12 @@
 package zabmtri.entity;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +29,33 @@ public class EGlAccount {
 	public Integer lft;
 	public Integer rgt;
 	public Integer isroot;
-	
-	public static List<EGlAccount> readAll(ResultSet rs) throws SQLException {
-		List<EGlAccount> result = new ArrayList<EGlAccount>();
-		while (rs.next()) {
-			result.add(EGlAccount.read(rs));
+	public BigDecimal balance;
+
+	public static List<EGlAccount> readAll(Connection conn, LocalDate asOf) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT glaccnt.*, get_crdr.balance FROM glaccnt ");
+			sql.append("LEFT JOIN get_saldoaccount (glaccnt.glaccount, ? , current_date) ON glaccnt.glaccount = get_saldoaccount.glaccount ");
+			sql.append("LEFT JOIN get_crdr (glaccnt.glaccount, get_saldoaccount.balance, glaccnt.ACCOUNTTYPE) ON glaccnt.glaccount = get_crdr.glaccount ");
+			sql.append("WHERE glaccnt.accounttype is not null ");
+			sql.append("ORDER BY glaccnt.glaccount ");
+
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			ps.setDate(1, Date.valueOf(asOf));
+
+			ResultSet rs = ps.executeQuery();
+
+			List<EGlAccount> result = new ArrayList<EGlAccount>();
+			while (rs.next()) {
+				result.add(EGlAccount.read(rs));
+			}
+
+			return result;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
 		}
-		
-		return result;
 	}
-	
+
 	public static EGlAccount read(ResultSet rs) throws SQLException {
 		EGlAccount entity = new EGlAccount();
 		entity.glaccount = rs.getString("glaccount");
@@ -54,7 +76,8 @@ public class EGlAccount {
 		entity.lft = rs.getInt("lft");
 		entity.rgt = rs.getInt("rgt");
 		entity.isroot = rs.getInt("isroot");
-		
+		entity.balance = rs.getBigDecimal("balance");
+
 		return entity;
 	}
 }

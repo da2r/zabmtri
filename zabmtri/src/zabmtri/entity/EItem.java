@@ -1,9 +1,12 @@
 package zabmtri.entity;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,13 +91,35 @@ public class EItem {
 	public Integer importduty_type;
 	public BigDecimal cukai_rate;
 	public Integer delivernostocksn;
-	
+
+	public static List<EItem> readAll(Connection conn, LocalDate asOf) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT item.* FROM item ");
+			sql.append("ORDER BY item.itemno");
+
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			// ps.setDate(1, Date.valueOf(asOf));
+
+			ResultSet rs = ps.executeQuery();
+
+			List<EItem> result = new ArrayList<EItem>();
+			while (rs.next()) {
+				result.add(EItem.read(rs));
+			}
+
+			return result;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
 	public static List<EItem> readAll(ResultSet rs) throws SQLException {
 		List<EItem> result = new ArrayList<EItem>();
 		while (rs.next()) {
 			result.add(EItem.read(rs));
 		}
-		
+
 		return result;
 	}
 
