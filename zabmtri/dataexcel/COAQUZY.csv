@@ -1,0 +1,89 @@
+1000;Kas & Bank;Cash/Bank;;
+1000.01;Kas kecil;Cash/Bank;1000;
+1000.02;Kas Besar;Cash/Bank;1000;
+1000.03;Bank;Cash/Bank;1000;
+1000.04;Kas Transfer(Post Silang);Cash/Bank;1000;
+1001;Deposito;Cash/Bank;1000;
+1100;Piutang;Account Receivable;;
+1100.02;Uang muka pembelian;Account Receivable;1100;
+1200;Persediaan Barang Dagang;Inventory;;Nomor Akun ini tidak boleh di ubah dan dihapus
+1201;Barang Terkirim;Inventory;;Nomor Akun ini tidak boleh di ubah dan dihapus
+1300;Perlengkapan;Other Current Asset;;
+1400;Sewa Gedung Dibayar Dimuka;Other Current Asset;;
+1500;Asuransi Dibayar Dimuka;Other Current Asset;;
+1600;PPn Masukan;Other Current Asset;;Nomor Akun ini tidak boleh di ubah dan dihapus
+1700;Aktiva Tetap;Fixed Asset;;
+1700.01;Tanah;Fixed Asset;1700;
+1700.02;Gedung;Fixed Asset;1700;
+1700.03;Kendaraan;Fixed Asset;1700;
+1700.04;Peralatan;Fixed Asset;1700;
+1700.05;Inventaris Kantor;Fixed Asset;1700;
+1710;Akumulasi Depresiasi Fixed Asset;Accumulated Depreciation;;
+1710.01;Akumulasi Penyusutan Gedung;Accumulated Depreciation;1710;
+1710.02;Akumulasi Penyusutan Kendaraan;Accumulated Depreciation;1710;
+1710.03;Akumulasi Penyusutan Peralatan;Accumulated Depreciation;1710;
+1710.04;Akumulasi Penyusutan Inventaris Kantor;Accumulated Depreciation;1710;
+2000;Hutang;Account Payable;;
+2000.02;Uang Muka Penjualan;Account Payable;2000;
+2100;PPn Keluaran;Other Current Liability;;Nomor Akun ini tidak boleh di ubah dan dihapus
+2200;Hutang Pembelian Belum Ditagih;Other Current Liability;;Nomor Akun ini tidak boleh di ubah dan dihapus
+2300;Hutang Jangka Panjang;Other Current Liability;;
+3000;Modal;Equity;;
+3200.02;Deviden;Equity;;
+4000;Pendapatan;Revenue;;
+4000.01;Penjualan;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+4000.02;Pendapatan Jasa;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+4000.03;Retur Penjualan;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+4000.04;Potongan Penjualan ;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+5000;COGS;Cost of Goods Sold;;Nomor Akun ini tidak boleh di ubah dan dihapus
+6000;BIAYA PEMASARAN UMUM & ADM;Expense;;
+6100;Biaya Pemasaran;Expense;6000;
+6101;Biaya Iklan;Expense;6100;
+6102;Biaya Komisi;Expense;6100;
+6103;"Biaya Bensin, Parkir, Tol Kendaraan;Expense";6100;
+6104;Biaya Entertainment;Expense;6100;
+6199;Biaya Pemasaran Lainnya;Expense;6100;
+6200;Biaya Umum & Administrasi;Expense;;
+6201;Gaji & Tunjangan Karyawan;Expense;6200;
+6201.01;"Biaya Gaji, Lembur & THR";Expense;6201;
+6201.02;Biaya Bonus Pesangon & Kompensasi;Expense;6201;
+6201.03;Biaya Transport Karyawan;Expense;6201;
+6201.04;Biaya Upah & Honorer;Expense;6201;
+6201.05;Biaya Catering & Makan Karyawan;Expense;6201;
+6201.06;Biaya Tunjangan Kesehatan;Expense;6201;
+6201.07;Biaya Asuransi Karyawan;Expense;6201;
+6201.08;Biaya THR;Expense;6201;
+6203;"Beban Utiliti, Adm, Sewa & Lainnya";Expense;6200;
+6203.01;Biaya Listrik;Expense;6203;
+6203.02;Biaya PAM;Expense;6203;
+6203.03;Biaya Telekomunikasi;Expense;6203;
+6203.04;Biaya Koran & Majalah;Expense;6203;
+6203.05;"Biaya Ekspedisi, Pos & Materai";Expense;6203;
+6203.06;Biaya Perjalanan Dinas;Expense;6203;
+6203.07;Biaya Perlengkapan Kantor;Expense;6203;
+6203.08;"STNK, KIR & Pajak Kendaraan";Expense;6203;
+6203.09;Biaya Pajak;Expense;6203;
+6203.10;Biaya Retribusi & Sumbangan;Expense;6203;
+6203.11;Biaya Sewa Gedung;Expense;6203;
+6203.12;Biaya Umum & Adm Lainnya;Expense;6203;Nomor Akun ini tidak boleh di ubah dan dihapus
+6204;Repair & Maintenance Expense;Expense;6200;
+6204.01;Biaya Pemeliharaan Gedung;Expense;6204;
+6204.02;Biaya Pemeliharaan Peralatan Kantor;Expense;6204;
+6204.03;Biaya Pemeliharaan Kendaraan;Expense;6204;
+6300;Biaya Penyusutan & Amortisasi;Expense;6000;
+6300.01;Biaya Penyusutan Gedung;Expense;6300;
+6300.02;Biaya Penyusutan Kendaraan;Expense;6300;
+6300.03;Biaya Penyusutan Peralatan;Expense;6300;
+6300.04;Biaya Penyusutan Inventaris kantor;Expense;6300;
+7100;PENDAPATAN DILUAR USAHA;Other Income;;
+7100.01;Pendapatan Jasa Giro;Other Income;7100;
+7100.02;Pendapatan Bunga Deposito;Other Income;7100;
+7100.03;Penjualan Inventory / Perlengkapan;Other Income;7100;
+7100.99;Pendapatan Lain-Lain;Other Income;7100;
+7200;BIAYA DILUAR USAHA;Other Expense;;
+7200.01;Biaya Bunga Pinjaman Lainnya;Other Expense;7200;
+7200.02;Biaya Adm Bank & Buku Cek/Giro;Other Expense;7200;
+7200.03;Pajak Jasa Giro;Other Expense;7200;
+7200.99;Beban Lain-Lain;Other Expense;7200;
+8100;Gain/Loss Dispossal F.A;Other Expense;;
+8200;Gain/Loss Revaluation FA;Other Income;;

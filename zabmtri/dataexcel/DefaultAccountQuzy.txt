@@ -1,0 +1,13 @@
+1200;Akun Persediaan Default Item
+4000.01;Penjualan
+4000.02;Pendapatan Jasa
+4000.03;Retur Penjualan
+4000.04;Potongan Penjualan 
+5000;COGS
+2200;Hutang Pembelian Belum Ditagih
+1600;PPn Masukan
+2100;PPn Keluaran
+6203.12;Expense non Inventory
+1201;Barang Terkirim
+
+

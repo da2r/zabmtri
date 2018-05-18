@@ -1,0 +1,54 @@
+1000;Cash & Bank;Cash/Bank;;
+1000.01;Cash;Cash/Bank;1000;
+1000.02;Bank;Cash/Bank;1000;
+1200;Merchandise Inventory;Inventory;;Nomor Akun ini tidak boleh di ubah dan dihapus
+1201;Good In Transit;Inventory;;Nomor Akun ini tidak boleh di ubah dan dihapus
+1300;Supplies;Other Current Asset;;
+1400;Prepaid Rent;Other Current Asset;;
+1500;PPh 23 (Purchase);Other Current Asset;;
+1600;Vat In;Other Current Asset;;Nomor Akun ini tidak boleh di ubah dan dihapus
+1700;Fixed Assets;Fixed Asset;;
+1700.01;Building;Fixed Asset;1700;
+1700.02;Vehicle;Fixed Asset;1700;
+1700.03;Equipment;Fixed Asset;1700;
+1710;Accumulated Depreciation;Accumulated Depreciation;;
+1710.01;Accumulated Depreciation of Building;Accumulated Depreciation;1710;
+1710.02;Accumulated Depreciation of Vehicle;Accumulated Depreciation;1710;
+1710.03;Accumulated Depreciation of Equipment;Accumulated Depreciation;1710;
+2100;Vat Out;Other Current Liability;;Nomor Akun ini tidak boleh di ubah dan dihapus
+2200;Unbilled Goods;Other Current Liability;;Nomor Akun ini tidak boleh di ubah dan dihapus
+2300;Long Term Payable;Other Current Liability;;
+2400;PPh 23 (Sales);Other Current Liability;
+3000;Equity;Equity;;
+4000;Sales;Revenue;;
+4000.01;Sales;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+4000.02;Other Sales;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+4000.03;Sales Return;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+4000.04;Sales Discount;Revenue;4000;Nomor Akun ini tidak boleh di ubah dan dihapus
+5000;COGS;Cost of Goods Sold;;Nomor Akun ini tidak boleh di ubah dan dihapus
+6000;Marketing, General & Adm. Expenses;Expense;;
+6100;Marketing Expenses;Expense;6000;
+6101;Advertising Expense;Expense;6100;
+6102;Transportation Expense;Expense;6100;
+6199;Other Marketing Expense;Expense;6100;,,
+6200;General & Administration Expense;Expense;6000;
+6201;Salaries & Employee Benefits;Expense;6200
+6201.01;Salary Expense;Expense;6201;
+6201.02;Allowance Expense;Expense;6201;
+6202;Utility & Administration Expense;Expense;6200;
+6202.01;Utility (Electric, water, etc) Expense ;Expense;6202;
+6202.02;Supplies Expense;Expense;6202;
+6203.12;General & Administration Expense;Expense;6202;Nomor Akun ini tidak boleh di ubah dan dihapus
+6300;Depreciation Expense;Expense;6000;
+6300.01;Depreciation Expense of Building;Expense;6300;
+6300.02;Depreciation Expense of Vehicle;Expense;6300;
+6300.03;Depreciation Expense of Equipment;Expense;6300;
+7100;Non operational Revenue;Other Income;;
+7100.01;Bank Interest Income;Other Income;7100;
+7100.99;Other Non Operational Revenue;Other Income;7100;,,
+7200;Non Operational Expense;Other Expense;;,,
+7200.01;Loan Interest Expense;Other Expense;7200;,,
+7200.02;Bank Administration Expense;Other Expense;7200;,,
+7200.99;Other Non Operational Expense;Other Expense;7200;,,
+8100;Gain/Loss Dispossal F.A;Other Expense;;,,
+8200;Gain/Loss Revaluation FA;Other Income;;,,
