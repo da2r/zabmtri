@@ -14,6 +14,10 @@ public class AppData {
 
 	public static LocalDate dateCutOff = LocalDate.of(2018, 5, 1);
 	
+	public static String alphaPath;
+	public static String betaPath;
+	public static String targetPath;
+
 	public static Connection alpha;
 	public static Connection beta;
 	public static Connection target;
@@ -32,6 +36,8 @@ public class AppData {
 
 	public static List<EVendor> alphaVendor;
 	public static List<EVendor> betaVendor;
+	
+	public static IMainForm mainForm;
 
 	public static String branchCode = null;	// BUMMER!!!
 

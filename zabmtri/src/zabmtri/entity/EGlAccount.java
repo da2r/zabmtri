@@ -13,6 +13,7 @@ import java.util.List;
 public class EGlAccount {
 	public String glaccount;
 	public Integer currencyid;
+	public String currencyname;
 	public String accountname;
 	public Integer accounttype;
 	public Integer subaccount;
@@ -34,7 +35,8 @@ public class EGlAccount {
 	public static List<EGlAccount> readAll(Connection conn, LocalDate asOf) {
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT glaccnt.*, get_crdr.balance FROM glaccnt ");
+			sql.append("SELECT glaccnt.*, get_crdr.balance, currency.currencyname FROM glaccnt ");
+			sql.append("LEFT JOIN currency ON glaccnt.currencyid = currency.currencyid ");
 			sql.append("LEFT JOIN get_saldoaccount (glaccnt.glaccount, ? , current_date) ON glaccnt.glaccount = get_saldoaccount.glaccount ");
 			sql.append("LEFT JOIN get_crdr (glaccnt.glaccount, get_saldoaccount.balance, glaccnt.ACCOUNTTYPE) ON glaccnt.glaccount = get_crdr.glaccount ");
 			sql.append("WHERE glaccnt.accounttype is not null ");
@@ -60,6 +62,7 @@ public class EGlAccount {
 		EGlAccount entity = new EGlAccount();
 		entity.glaccount = rs.getString("glaccount");
 		entity.currencyid = rs.getInt("currencyid");
+		entity.currencyname = rs.getString("currencyname");
 		entity.accountname = rs.getString("accountname");
 		entity.accounttype = rs.getInt("accounttype");
 		entity.subaccount = rs.getInt("subaccount");

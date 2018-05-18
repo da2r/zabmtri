@@ -2,6 +2,6 @@ package zabmtri;
 
 public interface IMainForm {
 
-	public void setProgressText(String text);
+	public void printOutput(String text);
 
 }

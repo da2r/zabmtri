@@ -96,6 +96,7 @@ public class EItem {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT item.* FROM item ");
+			sql.append("WHERE item.itemtype IS NOT NULL ");
 			sql.append("ORDER BY item.itemno");
 
 			PreparedStatement ps = conn.prepareStatement(sql.toString());
