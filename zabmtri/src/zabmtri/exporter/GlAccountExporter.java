@@ -26,7 +26,7 @@ public class GlAccountExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EGlAccount data : AppData.alphaGlAccount) {
+				for (EGlAccount data : AppData.betaGlAccount) {
 					csvPrinter.printRecord(getRow(data));
 				}
 
@@ -98,6 +98,6 @@ public class GlAccountExporter {
 	}
 
 	private String getOutputFileName() {
-		return Util.outputFile("master-1-glaccount.csv");
+		return Util.outputFile("master-01-glaccount.csv");
 	}
 }

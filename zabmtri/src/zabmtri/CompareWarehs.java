@@ -60,10 +60,10 @@ public class CompareWarehs {
 
 	private void loadData() {
 		data = new ArrayList<Pair<EWarehs>>();
-
+		
 		List<EWarehs> alpha = AppData.alphaWarehs;
 		List<EWarehs> beta = AppData.betaWarehs;
-
+		
 		for (EWarehs a : alpha) {
 			Pair<EWarehs> p = new Pair<EWarehs>();
 			p.alpha = a;
@@ -71,13 +71,16 @@ public class CompareWarehs {
 			EWarehs b = find(beta, a.name);
 			if (b != null) {
 				p.beta = b;
-				beta.remove(b);
 			}
 
 			data.add(p);
 		}
 
 		for (EWarehs b : beta) {
+			if (find(alpha, b.name) == null) {
+				continue;
+			}
+			
 			Pair<EWarehs> p = new Pair<EWarehs>();
 			p.beta = b;
 			data.add(p);

@@ -7,20 +7,19 @@ import java.util.List;
 import zabmtri.entity.ECustomer;
 import zabmtri.entity.EGlAccount;
 import zabmtri.entity.EItem;
+import zabmtri.entity.EJv;
 import zabmtri.entity.EVendor;
 import zabmtri.entity.EWarehs;
 
 public class AppData {
 
-	public static LocalDate dateCutOff = LocalDate.of(2018, 5, 1);
-	
+	public static LocalDate dateCutOff = LocalDate.of(2017, 12, 31);
+
 	public static String alphaPath;
 	public static String betaPath;
-	public static String targetPath;
 
 	public static Connection alpha;
 	public static Connection beta;
-	public static Connection target;
 
 	public static List<EGlAccount> alphaGlAccount;
 	public static List<EGlAccount> betaGlAccount;
@@ -36,9 +35,23 @@ public class AppData {
 
 	public static List<EVendor> alphaVendor;
 	public static List<EVendor> betaVendor;
-	
+
+	public static List<EJv> betaJv;
+	public static List<EJv> betaOp;
+	public static List<EJv> betaOd;
+
 	public static IMainForm mainForm;
 
-	public static String branchCode = null;	// BUMMER!!!
+	public static String branchCode = null; // BUMMER!!!
+
+	public static String getBetaCurrencyName(String glaccount) {
+		for (EGlAccount account : betaGlAccount) {
+			if (account.glaccount.equals(glaccount)) {
+				return account.currencyname;
+			}
+		}
+
+		throw new RuntimeException("Cannot find currency for glaccount " + glaccount);
+	}
 
 }

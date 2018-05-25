@@ -75,13 +75,16 @@ public class CompareGlAccount {
 			EGlAccount b = find(beta, a.glaccount);
 			if (b != null) {
 				p.beta = b;
-				beta.remove(b);
 			}
 
 			data.add(p);
 		}
 
 		for (EGlAccount b : beta) {
+			if (find(alpha, b.glaccount) == null) {
+				continue;
+			}
+			
 			Pair<EGlAccount> p = new Pair<EGlAccount>();
 			p.beta = b;
 			data.add(p);

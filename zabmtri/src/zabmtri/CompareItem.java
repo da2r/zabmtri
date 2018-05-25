@@ -64,10 +64,10 @@ public class CompareItem {
 
 	private void loadData() {
 		data = new ArrayList<Pair<EItem>>();
-
+		
 		List<EItem> alpha = AppData.alphaItem;
 		List<EItem> beta = AppData.betaItem;
-
+		
 		for (EItem a : alpha) {
 			Pair<EItem> p = new Pair<EItem>();
 			p.alpha = a;
@@ -75,13 +75,16 @@ public class CompareItem {
 			EItem b = find(beta, a.itemno);
 			if (b != null) {
 				p.beta = b;
-				beta.remove(b);
 			}
 
 			data.add(p);
 		}
 
 		for (EItem b : beta) {
+			if (find(alpha, b.itemno) == null) {
+				continue;
+			}
+			
 			Pair<EItem> p = new Pair<EItem>();
 			p.beta = b;
 			data.add(p);

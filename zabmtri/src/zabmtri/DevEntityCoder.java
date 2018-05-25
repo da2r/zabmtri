@@ -14,7 +14,7 @@ public class DevEntityCoder {
 		Connection conn = DriverManager.getConnection(path, "guest", "guest");
 
 		Statement stm = conn.createStatement();
-		ResultSet rs = stm.executeQuery("SELECT First 1 * FROM persondata WHERE persontype = 0 ");
+		ResultSet rs = stm.executeQuery("SELECT First 1 * FROM jvdet ");
 
 		ResultSetMetaData metadata = rs.getMetaData();
 		int count = metadata.getColumnCount();

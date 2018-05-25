@@ -1,6 +1,8 @@
 package zabmtri;
 
 import java.io.File;
+import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,10 +16,11 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-@Deprecated
 public abstract class BaseExport {
 
 	protected Document doc;
+
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public BaseExport() {
 		DocumentBuilder docBuilder = getDocumentBuilder();
@@ -52,7 +55,12 @@ public abstract class BaseExport {
 	protected Node node(String tag, Object value) {
 		Node result = doc.createElement(tag);
 		if (value != null) {
-			result.setTextContent(value.toString());	
+			if (value instanceof Date) {
+				String str = ((Date) value).toLocalDate().format(formatter);
+				result.setTextContent(str);
+			} else {
+				result.setTextContent(value.toString());
+			}
 		}
 
 		return result;
@@ -73,9 +81,10 @@ public abstract class BaseExport {
 			Transformer transformer = transformerFactory.newTransformer();
 
 			File file = new File(Util.outputFile(getOutputFileName()));
+			if (!file.exists()) {
+				file.createNewFile();
+			}
 			StreamResult result = new StreamResult(file);
-
-			System.out.println(file.getAbsolutePath());
 
 			transformer.transform(source, result);
 		} catch (Throwable t) {
