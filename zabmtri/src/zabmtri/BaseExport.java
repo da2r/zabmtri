@@ -2,7 +2,6 @@ package zabmtri;
 
 import java.io.File;
 import java.sql.Date;
-import java.time.format.DateTimeFormatter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,8 +18,6 @@ import org.w3c.dom.Node;
 public abstract class BaseExport {
 
 	protected Document doc;
-
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public BaseExport() {
 		DocumentBuilder docBuilder = getDocumentBuilder();
@@ -56,7 +53,7 @@ public abstract class BaseExport {
 		Node result = doc.createElement(tag);
 		if (value != null) {
 			if (value instanceof Date) {
-				String str = ((Date) value).toLocalDate().format(formatter);
+				String str = Util.formatDate((Date) value);
 				result.setTextContent(str);
 			} else {
 				result.setTextContent(value.toString());

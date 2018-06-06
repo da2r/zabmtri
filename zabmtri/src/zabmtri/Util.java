@@ -3,6 +3,9 @@ package zabmtri;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,8 +14,30 @@ public class Util {
 	private static boolean initialized = false;
 	private static String outputFolder = null;
 
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyy-MM-dd");
+	private static final DateTimeFormatter CSV_DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 	public static String booleanText(boolean hasEquals) {
 		return hasEquals ? "Yes" : "No";
+	}
+
+	public static String formatDate(LocalDate date) {
+		return date.format(DATE_FORMAT);
+	}
+	
+	public static String formatDate(Date date) {
+		return date.toLocalDate().format(DATE_FORMAT);
+	}
+
+	public static String formatDateCsv(LocalDate date) {
+		return date.format(CSV_DATE_FORMAT);
+	}
+	
+	public static String formatNumber(BigDecimal balance) {
+		String result = balance.toPlainString();
+		result = result.replace('.', ',');
+		
+		return result;
 	}
 
 	public static synchronized void initOutputFile() {
@@ -69,4 +94,5 @@ public class Util {
 			AppData.mainForm.printOutput(message);
 		}
 	}
+	
 }

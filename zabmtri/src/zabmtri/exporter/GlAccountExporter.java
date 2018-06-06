@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +17,6 @@ import zabmtri.entity.EGlAccount;
 
 public class GlAccountExporter {
 	
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
 	public void execute() {
 		try {
 			Path path = Paths.get(getOutputFileName());
@@ -61,8 +58,8 @@ public class GlAccountExporter {
 		result.add(data.accountname);
 		result.add(asAccountTypeName(data.accounttype));
 		result.add(data.currencyname);
-		result.add(data.balance);
-		result.add(AppData.dateCutOff.format(formatter));
+		result.add(Util.formatNumber(data.balance));
+		result.add(Util.formatDateCsv(AppData.dateCutOff));
 		result.add(data.parentaccount);
 		result.add(data.memo);
 
