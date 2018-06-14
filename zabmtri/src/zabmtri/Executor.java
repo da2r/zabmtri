@@ -1,10 +1,9 @@
 package zabmtri;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
-
+import zabmtri.entity.EApCheq;
+import zabmtri.entity.EApInv;
+import zabmtri.entity.EArInv;
+import zabmtri.entity.EArPmt;
 import zabmtri.entity.EGlAccount;
 import zabmtri.entity.EItem;
 import zabmtri.entity.EJv;
@@ -45,11 +44,11 @@ public class Executor {
 		}
 	}
 
-	private static void prepareData() {
+	public static void prepareData() {
 		Util.printOutput("Preparing Data");
 		
-		AppData.alpha = createConnection(AppData.alphaPath);
-		AppData.beta = createConnection(AppData.betaPath);
+		AppData.alpha = DbUtil.createConnection(AppData.alphaPath);
+		AppData.beta = DbUtil.createConnection(AppData.betaPath);
 
 		System.out.println("WARN AppData.target is not connected");
 
@@ -70,24 +69,15 @@ public class Executor {
 		AppData.betaOp = EJv.readAll(AppData.beta, "PMT");
 		AppData.betaOd = EJv.readAll(AppData.beta, "DPT");
 		
+		Util.printOutput("Reading Sales..");
+		AppData.arInv = EArInv.readAll(AppData.beta);
+		AppData.arPmt = EArPmt.readAll(AppData.beta);
+		
+		Util.printOutput("Reading Purchases..");
+		AppData.apInv = EApInv.readAll(AppData.beta);
+		AppData.apCheq = EApCheq.readAll(AppData.beta);
+		
 	}
 
-	private static Connection createConnection(String path) {
-		try {
-			System.out.println("Connecting ... ");
-
-			if (path == null || path.isEmpty()) {
-				throw new RuntimeException("File belum dipilih");
-			}
-
-			Properties props = new Properties();
-			props.setProperty("user", "guest");
-			props.setProperty("password", "guest");
-			props.setProperty("encoding", "NONE");
-
-			return DriverManager.getConnection("jdbc:firebirdsql:" + path, props);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	
 }

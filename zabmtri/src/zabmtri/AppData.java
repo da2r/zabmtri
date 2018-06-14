@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 
+import zabmtri.entity.EApCheq;
+import zabmtri.entity.EApInv;
+import zabmtri.entity.EArInv;
+import zabmtri.entity.EArPmt;
 import zabmtri.entity.ECustomer;
 import zabmtri.entity.EGlAccount;
 import zabmtri.entity.EItem;
@@ -40,9 +44,16 @@ public class AppData {
 	public static List<EJv> betaOp;
 	public static List<EJv> betaOd;
 
+	public static List<EArInv> arInv;
+	public static List<EArPmt> arPmt;
+
+	public static List<EApInv> apInv;
+	public static List<EApCheq> apCheq;
+
 	public static IMainForm mainForm;
 
 	public static String branchCode = null; // BUMMER!!!
+
 
 	public static String getBetaCurrencyName(String glaccount) {
 		for (EGlAccount account : betaGlAccount) {

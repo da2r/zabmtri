@@ -94,5 +94,21 @@ public class Util {
 			AppData.mainForm.printOutput(message);
 		}
 	}
+
+	public static Integer avoidZero(int value) {
+		if (value == 0) {
+			return null;
+		}
+		
+		return value;
+	}
+
+	public static BigDecimal avoidNull(BigDecimal value) {
+		if (value == null) {
+			return BigDecimal.ZERO;
+		}
+		
+		return value;
+	}
 	
 }
