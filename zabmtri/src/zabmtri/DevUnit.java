@@ -12,7 +12,7 @@ public class DevUnit {
 		AppData.alphaPath = "/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB";
 		AppData.betaPath = "/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB";
 		
-		Executor.execute();
+		Executor.executeMerge();
 
 		tc = System.currentTimeMillis() - tc;
 		System.out.println(String.format("finished : %,d ms", tc));

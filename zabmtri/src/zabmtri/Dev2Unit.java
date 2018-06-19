@@ -1,19 +1,18 @@
 package zabmtri;
 
-import zabmtri.exporter.PurchaseExporter;
-import zabmtri.exporter.SalesExporter;
-
 public class Dev2Unit {
 	public static void main(String[] args) throws Exception {
 		AppData.alphaPath = "/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB";
 		AppData.betaPath = "/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB";
-		Executor.prepareData();
+		AppData.targetPath = "/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB";
+		// AppData.targetPath =
+		// "/Users/herman/git/zabmtri/zabmtri/sample/Sample.GDB";
 
-		SalesExporter se = new SalesExporter();
-		se.execute();
+		// Executor.executeMerge();
+		// Executor.executeImportWarehs();
+		Executor.executeImportItemSn();
 
-		PurchaseExporter pe = new PurchaseExporter();
-		pe.execute();
+		System.out.println("finished");
 	}
 
 }

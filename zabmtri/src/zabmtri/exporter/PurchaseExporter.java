@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 
 import zabmtri.AppData;
 import zabmtri.BaseExport;
+import zabmtri.Util;
 import zabmtri.entity.EApCheq;
 import zabmtri.entity.EApInv;
 import zabmtri.entity.EApInvChq;
@@ -183,6 +184,6 @@ public class PurchaseExporter extends BaseExport {
 
 	@Override
 	protected String getOutputFileName() {
-		return "master-10-purchase.xml";
+		return Util.purchaseOutputFile();
 	}
 }

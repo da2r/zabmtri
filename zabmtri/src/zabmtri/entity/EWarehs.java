@@ -15,7 +15,7 @@ public class EWarehs {
 	public String address2;
 	public String address3;
 	public String pic;
-	public Integer suspended;
+	public boolean suspended;
 
 	public static List<EWarehs> readAll(Connection conn) {
 		try {
@@ -47,8 +47,44 @@ public class EWarehs {
 		entity.address2 = rs.getString("address2");
 		entity.address3 = rs.getString("address3");
 		entity.pic = rs.getString("pic");
-		entity.suspended = rs.getInt("suspended");
+		entity.suspended = rs.getInt("suspended") == 1;
 
 		return entity;
+	}
+
+	public static int write(Connection conn, EWarehs entity) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("insert into WAREHS(NAME, DESCRIPTION, ADDRESS1, ADDRESS2, ADDRESS3, PIC, SUSPENDED) values(?, ?, ?, ?, ?, ?, ?)");
+
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			ps.setString(1, entity.name);
+			ps.setString(2, entity.description);
+			ps.setString(3, entity.address1);
+			ps.setString(4, entity.address2);
+			ps.setString(5, entity.address3);
+			ps.setString(6, entity.pic);
+			ps.setInt(7, entity.suspended ? 1 : 0);
+
+			return ps.executeUpdate();
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+	
+	public static boolean isExists(Connection conn, String warehouseName) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT warehs.name FROM warehs ");
+			sql.append("WHERE warehs.name = ?");
+
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			ps.setString(1, warehouseName);
+
+			ResultSet rs = ps.executeQuery();
+			return rs.next();
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 }

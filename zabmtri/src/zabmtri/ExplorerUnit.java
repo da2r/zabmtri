@@ -1,5 +1,6 @@
 package zabmtri;
 
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,27 +12,37 @@ import java.util.List;
 public class ExplorerUnit {
 
 	private static Connection conn = DbUtil.createConnection("/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB");
+	// private static Connection conn =
+	// DbUtil.createConnection("/Users/herman/git/zabmtri/zabmtri/sample/Sample.GDB");
 	private static List<Integer> fmt = new ArrayList<Integer>();
 
 	public static void main(String[] args) throws Exception {
-		StringBuilder sql = new StringBuilder();
-		sql.append("select * from apinvdet");
-//		 sql.append(showTableSQL());
-		 
-//		 APCHEQ                         
-//		 APDPDET                        
-//		 APINV                          
-//		 APINVCHQ                       
-//		 APINVCHQ_DISC                  
-//		 APINVDET                       
-//		 APITMDET                       
+		System.out.println(Paths.get("").toAbsolutePath().toString());
 
-		
+		StringBuilder sql = new StringBuilder();
+		// sql.append("select * from apinvdet");
+		// sql.append(showTableSQL());
+		// sql.append(showSprocSQL());
+		// sql.append("select * from item");
+		// sql.append("select * from itemoblist");
+		// sql.append("select * from itemadj");
+		// sql.append("select * from itadjdet");
+//		 sql.append("select * from snhistory");
+		sql.append("select * from serialnumbers");
+		// sql.append("select * from itemhist");
+		// sql.append("select SNID from GET_SNID");
+
 		PreparedStatement ps = conn.prepareStatement(sql.toString());
 		ResultSet rs = ps.executeQuery();
 
-		 printAll(rs);
-//		printFirst(rs);
+		printAll(rs);
+		// printFirst(rs);
+
+//		System.out.println(conn.createStatement().executeUpdate("delete from snhistory where snid = 2 and itemhistid = 11"));
+
+		// System.out.println(conn.createStatement().executeUpdate("insert into
+		// serialnumbers(serialnumber, itemno, expireddate, sntype) values
+		// ('xxx', '1001', '2018-06-19', 1)"));
 
 	}
 
@@ -40,7 +51,7 @@ public class ExplorerUnit {
 		int count = meta.getColumnCount();
 		rs.next();
 		for (int i = 0; i < count; i++) {
-			String label = meta.getColumnName(i + 1);
+			String label = meta.getColumnLabel(i + 1);
 			String value = rs.getString(i + 1);
 
 			System.out.println(label + " = " + value);
@@ -51,7 +62,7 @@ public class ExplorerUnit {
 		ResultSetMetaData meta = rs.getMetaData();
 		int count = meta.getColumnCount();
 		for (int i = 0; i < count; i++) {
-			String label = meta.getColumnName(i + 1);
+			String label = meta.getColumnLabel(i + 1);
 			setFmt(label.length() + 2);
 			print(label, i);
 		}
@@ -64,9 +75,13 @@ public class ExplorerUnit {
 			newLine();
 		}
 	}
-	
+
 	public static String showTableSQL() {
 		return "SELECT a.RDB$RELATION_NAME FROM RDB$RELATIONS a WHERE RDB$SYSTEM_FLAG = 0 AND RDB$RELATION_TYPE = 0";
+	}
+
+	public static String showSprocSQL() {
+		return "SELECT RDB$PROCEDURE_NAME FROM rdb$procedures";
 	}
 
 	private static void newLine() {

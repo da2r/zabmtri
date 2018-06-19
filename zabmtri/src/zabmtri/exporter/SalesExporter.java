@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 
 import zabmtri.AppData;
 import zabmtri.BaseExport;
+import zabmtri.Util;
 import zabmtri.entity.EArInv;
 import zabmtri.entity.EArInvDet;
 import zabmtri.entity.EArInvPmt;
@@ -181,6 +182,6 @@ public class SalesExporter extends BaseExport {
 
 	@Override
 	protected String getOutputFileName() {
-		return "master-09-sales.xml";
+		return Util.salesOutputFile();
 	}
 }

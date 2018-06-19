@@ -11,6 +11,7 @@ import zabmtri.entity.EArPmt;
 import zabmtri.entity.ECustomer;
 import zabmtri.entity.EGlAccount;
 import zabmtri.entity.EItem;
+import zabmtri.entity.EItemSn;
 import zabmtri.entity.EJv;
 import zabmtri.entity.EVendor;
 import zabmtri.entity.EWarehs;
@@ -21,15 +22,19 @@ public class AppData {
 
 	public static String alphaPath;
 	public static String betaPath;
+	public static String targetPath;
 
 	public static Connection alpha;
 	public static Connection beta;
+	public static Connection target;
 
 	public static List<EGlAccount> alphaGlAccount;
 	public static List<EGlAccount> betaGlAccount;
 
 	public static List<EItem> alphaItem;
 	public static List<EItem> betaItem;
+	
+	public static List<EItemSn> itemSn;
 
 	public static List<EWarehs> alphaWarehs;
 	public static List<EWarehs> betaWarehs;

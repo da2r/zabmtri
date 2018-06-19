@@ -77,7 +77,7 @@ public abstract class BaseExport {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 
-			File file = new File(Util.outputFile(getOutputFileName()));
+			File file = new File(getOutputFileName());
 			if (!file.exists()) {
 				file.createNewFile();
 			}

@@ -95,6 +95,6 @@ public class GlAccountExporter {
 	}
 
 	private String getOutputFileName() {
-		return Util.outputFile("master-01-glaccount.csv");
+		return Util.glAccountOutputFile();
 	}
 }

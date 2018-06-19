@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 
 import zabmtri.AppData;
 import zabmtri.BaseExport;
+import zabmtri.Util;
 import zabmtri.entity.EJv;
 import zabmtri.entity.EJvDet;
 
@@ -100,6 +101,6 @@ public class JvExporter extends BaseExport {
 
 	@Override
 	protected String getOutputFileName() {
-		return "master-06-journal-voucher.xml";
+		return Util.jvOutputFile();
 	}
 }

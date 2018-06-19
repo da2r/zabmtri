@@ -18,8 +18,8 @@ public class DbUtil {
 			}
 
 			Properties props = new Properties();
-			props.setProperty("user", "guest");
-			props.setProperty("password", "guest");
+			props.setProperty("user", "cps#1");
+			props.setProperty("password", "cps#2001");
 			props.setProperty("encoding", "NONE");
 
 			return DriverManager.getConnection("jdbc:firebirdsql:" + path, props);
@@ -151,6 +151,19 @@ public class DbUtil {
 		}
 
 		throw new RuntimeException("Cannot get shipment for shipid " + shipid);
+	}
+
+	public static void closeQuietly(Connection closeable) {
+		if (closeable == null) {
+			return;
+		}
+
+		try {
+			closeable.close();
+		} catch (Exception e) {
+			// silent error;
+			e.printStackTrace();
+		}
 	}
 
 }

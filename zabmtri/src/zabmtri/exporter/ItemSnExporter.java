@@ -13,9 +13,9 @@ import org.apache.commons.csv.CSVPrinter;
 
 import zabmtri.AppData;
 import zabmtri.Util;
-import zabmtri.entity.EItem;
+import zabmtri.entity.EItemSn;
 
-public class ItemExporter {
+public class ItemSnExporter {
 
 	public void execute() {
 		try {
@@ -23,7 +23,7 @@ public class ItemExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EItem data : AppData.alphaItem) {
+				for (EItemSn data : AppData.itemSn) {
 					csvPrinter.printRecord(getRow(data));
 				}
 
@@ -40,21 +40,25 @@ public class ItemExporter {
 	private CSVFormat getHeader() {
 		ArrayList<String> header = new ArrayList<String>();
 		header.add("No. Barang");
-		header.add("Nama");
+		header.add("Nomor Seri");
+		header.add("Tgl. Expire");
+		header.add("Kuantitas");
 
 		String[] arr = header.toArray(new String[header.size()]);
 		return CSVFormat.DEFAULT.withHeader(arr);
 	}
 
-	private Iterable<?> getRow(EItem data) {
+	private Iterable<?> getRow(EItemSn data) {
 		List<Object> result = new ArrayList<Object>();
 		result.add(data.itemno);
-		result.add(data.itemdescription);
+		result.add(data.serialnumber);
+		result.add(data.expireddate);
+		result.add(Util.formatNumber(data.quantity));
 
 		return result;
 	}
 	
 	private String getOutputFileName() {
-		return Util.itemOutputFile();
+		return Util.itemSnOutputFile();
 	}
 }

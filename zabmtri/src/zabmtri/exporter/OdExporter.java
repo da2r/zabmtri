@@ -3,6 +3,7 @@ package zabmtri.exporter;
 import java.util.List;
 
 import zabmtri.AppData;
+import zabmtri.Util;
 import zabmtri.entity.EJv;
 
 public class OdExporter extends JvExporter {
@@ -19,6 +20,6 @@ public class OdExporter extends JvExporter {
 
 	@Override
 	protected String getOutputFileName() {
-		return "master-08-other-payment.xml";
+		return Util.odOutputFile();
 	}
 }

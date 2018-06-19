@@ -13,9 +13,9 @@ import org.apache.commons.csv.CSVPrinter;
 
 import zabmtri.AppData;
 import zabmtri.Util;
-import zabmtri.entity.EItem;
+import zabmtri.entity.EWarehs;
 
-public class ItemExporter {
+public class WarehsExporter {
 
 	public void execute() {
 		try {
@@ -23,7 +23,7 @@ public class ItemExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EItem data : AppData.alphaItem) {
+				for (EWarehs data : AppData.betaWarehs) {
 					csvPrinter.printRecord(getRow(data));
 				}
 
@@ -39,22 +39,32 @@ public class ItemExporter {
 
 	private CSVFormat getHeader() {
 		ArrayList<String> header = new ArrayList<String>();
-		header.add("No. Barang");
 		header.add("Nama");
+		header.add("Keterangan");
+		header.add("Alamat 1");
+		header.add("Alamat 2");
+		header.add("Alamat 3");
+		header.add("PIC");
+		header.add("Non Aktif");
 
 		String[] arr = header.toArray(new String[header.size()]);
 		return CSVFormat.DEFAULT.withHeader(arr);
 	}
 
-	private Iterable<?> getRow(EItem data) {
+	private Iterable<?> getRow(EWarehs data) {
 		List<Object> result = new ArrayList<Object>();
-		result.add(data.itemno);
-		result.add(data.itemdescription);
+		result.add(data.name);
+		result.add(data.description);
+		result.add(data.address1);
+		result.add(data.address2);
+		result.add(data.address3);
+		result.add(data.pic);
+		result.add(Util.booleanText(data.suspended));
 
 		return result;
 	}
 	
 	private String getOutputFileName() {
-		return Util.itemOutputFile();
+		return Util.warehsOutputFile();
 	}
 }
