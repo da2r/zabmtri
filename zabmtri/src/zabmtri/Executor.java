@@ -1,5 +1,7 @@
 package zabmtri;
 
+import java.sql.SQLException;
+
 import zabmtri.entity.EApCheq;
 import zabmtri.entity.EApInv;
 import zabmtri.entity.EArInv;
@@ -72,6 +74,8 @@ public class Executor {
 	}
 
 	public static void prepareData() {
+		AppData.branchCode = getTargetNativeBranchCode();
+		
 		Util.printOutput("Membaca Akun..");
 		AppData.alphaGlAccount = EGlAccount.readAll(AppData.alpha, AppData.dateCutOff);
 		AppData.betaGlAccount = EGlAccount.readAll(AppData.beta, AppData.dateCutOff);
@@ -91,12 +95,22 @@ public class Executor {
 		AppData.betaOd = EJv.readAll(AppData.beta, "DPT");
 
 		Util.printOutput("Membaca Penjualan..");
-		AppData.arInv = EArInv.readAll(AppData.beta);
+		// AppData.arDel = EArInv.readAll(AppData.beta, 1);
+		AppData.arInv = EArInv.readAll(AppData.beta, 0);
 		AppData.arPmt = EArPmt.readAll(AppData.beta);
 
 		Util.printOutput("Membaca Pembelian..");
-		AppData.apInv = EApInv.readAll(AppData.beta);
+		// AppData.apRec = EApInv.readAll(AppData.beta, 0);
+		AppData.apInv = EApInv.readAll(AppData.beta, 1);
 		AppData.apCheq = EApCheq.readAll(AppData.beta);
+	}
+
+	private static String getTargetNativeBranchCode() {
+		try {
+			return DbUtil.getNativeBranchCode(AppData.target);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void executeImportWarehs() {

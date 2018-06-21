@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ExplorerUnit {
 
-	private static Connection conn = DbUtil.createConnection("/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB");
 	// private static Connection conn =
-	// DbUtil.createConnection("/Users/herman/git/zabmtri/zabmtri/sample/Sample.GDB");
+	// DbUtil.createConnection("/Users/herman/git/zabmtri/zabmtri/sample/ABM_V5.GDB");
+	private static Connection conn = DbUtil.createConnection("/Users/herman/git/zabmtri/zabmtri/sample/Sample.GDB");
 	private static List<Integer> fmt = new ArrayList<Integer>();
 
 	public static void main(String[] args) throws Exception {
@@ -23,22 +23,25 @@ public class ExplorerUnit {
 		// sql.append("select * from apinvdet");
 		// sql.append(showTableSQL());
 		// sql.append(showSprocSQL());
-		// sql.append("select * from item");
+		// sql.append("select * from apinv");
+		// sql.append("select * from BRANCHCODES where ISNATIVE = 1");
+		sql.append("select * from item where itemno = 'AC-Sharp'");
 		// sql.append("select * from itemoblist");
 		// sql.append("select * from itemadj");
 		// sql.append("select * from itadjdet");
-//		 sql.append("select * from snhistory");
-		sql.append("select * from serialnumbers");
+		// sql.append("select * from snhistory");
+		// sql.append("select * from serialnumbers");
 		// sql.append("select * from itemhist");
 		// sql.append("select SNID from GET_SNID");
 
 		PreparedStatement ps = conn.prepareStatement(sql.toString());
 		ResultSet rs = ps.executeQuery();
 
-		printAll(rs);
-		// printFirst(rs);
+//		printAll(rs);
+		 printFirst(rs);
 
-//		System.out.println(conn.createStatement().executeUpdate("delete from snhistory where snid = 2 and itemhistid = 11"));
+		// System.out.println(conn.createStatement().executeUpdate("delete from
+		// snhistory where snid = 2 and itemhistid = 11"));
 
 		// System.out.println(conn.createStatement().executeUpdate("insert into
 		// serialnumbers(serialnumber, itemno, expireddate, sntype) values

@@ -27,6 +27,17 @@ public class DbUtil {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static String getNativeBranchCode(Connection conn) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement("SELECT branchcode FROM branchcodes where isnative = 1");
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get native branch");
+	}
 
 	public static String getPersonNo(Connection conn, Integer personid) throws SQLException {
 		if (personid == null || personid.equals(0)) {

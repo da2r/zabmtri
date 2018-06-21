@@ -122,10 +122,11 @@ public class EApInv {
 	public List<EApItmDet> detail;
 	public List<EApInvDet> expense;
 
-	public static List<EApInv> readAll(Connection conn) {
+	public static List<EApInv> readAll(Connection conn, int posted) {
 		try {
 			PreparedStatement ps = conn.prepareStatement(getSqlQuery());
 			ps.setDate(1, Date.valueOf(AppData.dateCutOff));
+			ps.setInt(2, posted);
 
 			ResultSet rs = ps.executeQuery();
 
@@ -157,7 +158,7 @@ public class EApInv {
 	private static String getSqlQuery() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT apinv.* FROM apinv ");
-		sb.append("WHERE apinv.invoicedate > ? ");
+		sb.append("WHERE apinv.invoicedate > ? AND apinv.posted = ? ");
 		sb.append("ORDER BY apinv.invoicedate, apinv.apinvoiceid ");
 
 		return sb.toString();

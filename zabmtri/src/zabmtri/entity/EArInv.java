@@ -117,10 +117,11 @@ public class EArInv {
 
 	public List<EArInvDet> detail;
 
-	public static List<EArInv> readAll(Connection conn) {
+	public static List<EArInv> readAll(Connection conn, int deliveryorder) {
 		try {
 			PreparedStatement ps = conn.prepareStatement(getSqlQuery());
 			ps.setDate(1, Date.valueOf(AppData.dateCutOff));
+			ps.setInt(2, deliveryorder);
 
 			ResultSet rs = ps.executeQuery();
 
@@ -149,7 +150,7 @@ public class EArInv {
 	private static String getSqlQuery() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT arinv.* FROM arinv ");
-		sb.append("WHERE arinv.invoicedate > ? ");
+		sb.append("WHERE arinv.invoicedate > ? AND arinv.deliveryorder = ? ");
 		sb.append("ORDER BY arinv.invoicedate, arinv.arinvoiceid ");
 
 		return sb.toString();
