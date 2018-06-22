@@ -2,6 +2,7 @@ package zabmtri;
 
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -21,24 +22,20 @@ public class ExplorerUnit {
 
 		StringBuilder sql = new StringBuilder();
 		// sql.append("select * from apinvdet");
-		// sql.append(showTableSQL());
+//		 sql.append(showTableSQL());
 		// sql.append(showSprocSQL());
-		// sql.append("select * from apinv");
-		// sql.append("select * from BRANCHCODES where ISNATIVE = 1");
-		sql.append("select * from item where itemno = 'AC-Sharp'");
-		// sql.append("select * from itemoblist");
-		// sql.append("select * from itemadj");
-		// sql.append("select * from itadjdet");
-		// sql.append("select * from snhistory");
-		// sql.append("select * from serialnumbers");
-		// sql.append("select * from itemhist");
-		// sql.append("select SNID from GET_SNID");
+//		sql.append("select * from persondata");
+//		 sql.append("select * from tax");
+//		 sql.append("select * from SALESMAN");
+//		 sql.append("Select * from CUSTTYPE");
+		 sql.append("select * from TAXTYPE_OUT");
 
 		PreparedStatement ps = conn.prepareStatement(sql.toString());
+		
 		ResultSet rs = ps.executeQuery();
 
-//		printAll(rs);
-		 printFirst(rs);
+		printAll(rs);
+		// printFirst(rs);
 
 		// System.out.println(conn.createStatement().executeUpdate("delete from
 		// snhistory where snid = 2 and itemhistid = 11"));
@@ -80,7 +77,9 @@ public class ExplorerUnit {
 	}
 
 	public static String showTableSQL() {
-		return "SELECT a.RDB$RELATION_NAME FROM RDB$RELATIONS a WHERE RDB$SYSTEM_FLAG = 0 AND RDB$RELATION_TYPE = 0";
+		// return "SELECT a.RDB$RELATION_NAME FROM RDB$RELATIONS a WHERE
+		// RDB$SYSTEM_FLAG = 0 AND RDB$RELATION_TYPE = 0";
+		return "SELECT a.RDB$RELATION_NAME FROM RDB$RELATIONS a";
 	}
 
 	public static String showSprocSQL() {

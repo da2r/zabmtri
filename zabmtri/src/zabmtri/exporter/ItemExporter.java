@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVPrinter;
 import zabmtri.AppData;
 import zabmtri.Util;
 import zabmtri.entity.EItem;
+import zabmtri.entity.EItemWhQuantity;
 
 public class ItemExporter {
 
@@ -24,7 +25,9 @@ public class ItemExporter {
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
 				for (EItem data : AppData.alphaItem) {
-					csvPrinter.printRecord(getRow(data));
+					for (EItemWhQuantity wqty : data.whQuantity) {
+						csvPrinter.printRecord(getRow(data, wqty));
+					}
 				}
 
 				csvPrinter.flush();
@@ -40,7 +43,59 @@ public class ItemExporter {
 	private CSVFormat getHeader() {
 		ArrayList<String> header = new ArrayList<String>();
 		header.add("No. Barang");
-		header.add("Nama");
+		header.add("Deskripsi Barang");
+		header.add("Tipe Barang");
+		header.add("Kategori Barang");
+		header.add("Kuantitas");
+		header.add("Total Biaya");
+		header.add("Gudang");
+		header.add("Per Tgl.");
+		header.add("Unit 1");
+		header.add("Unit 2");
+		header.add("Unit 3");
+		header.add("Rasio Unit 2");
+		header.add("Rasio Unit 3");
+		header.add("Satuan Kontrol Qty");
+		header.add("Def. Harga Jual 1");
+		header.add("Def. Harga Jual 2");
+		header.add("Def. Harga Jual 3");
+		header.add("Def. Harga Jual 4");
+		header.add("Def. Harga Jual 5");
+		header.add("Diskon");
+		header.add("Kode Pajak Penjualan");
+		header.add("Kts Minimum");
+		header.add("Pemasok Utama");
+		header.add("Kode Pajak Pembelian");
+		header.add("Akun Persediaan/Beban");
+		header.add("Akun Penjualan");
+		header.add("Akun Retur Penjualan");
+		header.add("Diskon Barang Penjualan");
+		header.add("Akun HPP");
+		header.add("Akun Return Pembelian");
+		header.add("Akun Belum Tertagih");
+		header.add("");
+		header.add("Kolom Cadangan 1");
+		header.add("Kolom Cadangan 2");
+		header.add("Kolom Cadangan 3");
+		header.add("Kolom Cadangan 4");
+		header.add("Kolom Cadangan 5");
+		header.add("Kolom Cadangan 6");
+		header.add("Kolom Cadangan 7");
+		header.add("Kolom Cadangan 8");
+		header.add("Kolom Cadangan 9");
+		header.add("Kolom Cadangan 10");
+		header.add("Catatan");
+		header.add("Barang Induk");
+		header.add("Pakai No Seri");
+		header.add("Paksa No Seri");
+		header.add("Kirim meski stok kosong");
+		header.add("Tipe Seri/Batch");
+		header.add("Pakai Kadaluarsa");
+		header.add("Berat");
+		header.add("Lama Pengiriman");
+		header.add("Tinggi");
+		header.add("Lebar");
+		header.add("Panjang");
 
 		// No. Barang = itemno
 		// Deskripsi Barang = itemdescription
@@ -105,12 +160,100 @@ public class ItemExporter {
 		return CSVFormat.DEFAULT.withHeader(arr);
 	}
 
-	private Iterable<?> getRow(EItem data) {
+	private Iterable<?> getRow(EItem data, EItemWhQuantity wqty) {
 		List<Object> result = new ArrayList<Object>();
+
 		result.add(data.itemno);
 		result.add(data.itemdescription);
+		result.add(asItemTypeName(data.itemtype));
+		result.add(data.categoryname);
+		if (wqty != null) {
+			result.add(wqty.quantity);
+			result.add(wqty.cost);
+			result.add(wqty.warehousename);
+		} else {
+			result.add("0");
+			result.add("0");
+			result.add("CENTRE");
+		}
+		result.add(Util.formatDateCsv(AppData.dateCutOff));
+		result.add(data.unit1);
+		result.add(data.unit2);
+		result.add(data.unit3);
+		result.add(data.ratio2);
+		result.add(data.ratio3);
+		result.add(data.unitcontrol);
+		result.add(data.unitprice);
+		result.add(data.unitprice2);
+		result.add(data.unitprice3);
+		result.add(data.unitprice4);
+		result.add(data.unitprice5);
+		result.add(data.discpc);
+		result.add(data.taxcodes);
+		result.add(data.minimumqty);
+		result.add(data.preferedvendorno);
+		result.add(data.ptaxcodes);
+		result.add(data.inventoryglaccnt);
+		result.add(data.salesglaccnt);
+		result.add(data.salesretglaccnt);
+		result.add(data.salesdiscountaccnt);
+		result.add(data.cogsglaccnt);
+		result.add(data.purchaseretglaccnt);
+		result.add(data.goodstransitaccnt);
+		result.add(data.goodstransitaccnt);
+		result.add(data.reserved1);
+		result.add(data.reserved2);
+		result.add(data.reserved3);
+		result.add(data.reserved4);
+		result.add(data.reserved5);
+		result.add(data.reserved6);
+		result.add(data.reserved7);
+		result.add(data.reserved8);
+		result.add(data.reserved9);
+		result.add(data.reserved10);
+		result.add(data.notes);
+		result.add(data.parentitem);
+		result.add(Util.booleanText(data.managesn));
+		result.add(Util.booleanText(data.forcesn));
+		result.add(Util.booleanText(data.delivernostocksn));
+		result.add(asSerialNumberTypeName(data.serialnumbertype));
+		result.add(Util.booleanText(data.manageexpired));
+		result.add(data.weight);
+		result.add(data.deliveryleadtime);
+		result.add(data.dimheight);
+		result.add(data.dimwidth);
+		result.add(data.dimdepth);
 
 		return result;
+	}
+
+	private String asSerialNumberTypeName(Integer serialnumbertype) {
+		switch (serialnumbertype) {
+		case 1:
+			return "Unik";
+		case 2:
+			return "Produksi";
+		default:
+			return null;
+		}
+	}
+
+	private String asItemTypeName(Integer itemtype) {
+		if (itemtype == null) {
+			return "null";
+		}
+
+		if (itemtype.equals(0)) {
+			return "Persediaan";
+		} else if (itemtype.equals(1)) {
+			return "Non-Persediaan";
+		} else if (itemtype.equals(2)) {
+			return "Servis";
+		} else if (itemtype.equals(3)) {
+			return "Group";
+		} else {
+			return "Lain";
+		}
 	}
 
 	private String getOutputFileName() {

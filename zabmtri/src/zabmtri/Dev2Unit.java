@@ -8,9 +8,9 @@ public class Dev2Unit {
 		// AppData.targetPath =
 		// "/Users/herman/git/zabmtri/zabmtri/sample/Sample.GDB";
 
-		// Executor.executeMerge();
+		 Executor.executeMerge();
 		// Executor.executeImportWarehs();
-		Executor.executeImportItemSn();
+//		Executor.executeImportItemSn();
 
 		System.out.println("finished");
 	}

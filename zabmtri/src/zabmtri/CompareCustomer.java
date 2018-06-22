@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,14 +66,8 @@ public class CompareCustomer {
 	private void loadData() throws SQLException {
 		data = new ArrayList<Pair<ECustomer>>();
 		
-		ResultSet rs;
-		String sql = "SELECT First 1 * FROM persondata WHERE persontype = 0";
-		
-		rs = AppData.alpha.createStatement().executeQuery(sql);
-		List<ECustomer> alpha = ECustomer.readAll(rs);
-
-		rs = AppData.beta.createStatement().executeQuery(sql);
-		List<ECustomer> beta = ECustomer.readAll(rs);
+		List<ECustomer> alpha = new ArrayList<ECustomer>(AppData.alphaCustomer);
+		List<ECustomer> beta = new ArrayList<ECustomer>(AppData.betaCustomer);
 
 		for (ECustomer a : alpha) {
 			Pair<ECustomer> p = new Pair<ECustomer>();

@@ -16,6 +16,10 @@ public class Util {
 
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyy-MM-dd");
 	private static final DateTimeFormatter CSV_DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	public static String booleanText(Integer value) {
+		return (value != null && value.equals(1)) ? "Yes" : "No";
+	}
 
 	public static String booleanText(boolean value) {
 		return value ? "Yes" : "No";
@@ -138,6 +142,10 @@ public class Util {
 	public static String glAccountOutputFile() {
 		return outputFile("master-01-glaccount.csv");
 	}
+	
+	public static String openingJvOutputFile() {
+		return outputFile("master-01-glaccount-opening-balance.xml");
+	}
 
 	public static String warehsOutputFile() {
 		return outputFile("master-02-warehouse.csv");
@@ -149,6 +157,10 @@ public class Util {
 
 	public static String customerOutputFile() {
 		return outputFile("master-04-customer.csv");
+	}
+	
+	public static String itemCategoryOutputFile() {
+		return outputFile("master-05-item-category.csv");
 	}
 
 	public static String itemOutputFile() {

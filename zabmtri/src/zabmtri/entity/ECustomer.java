@@ -1,11 +1,15 @@
 package zabmtri.entity;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import zabmtri.DbUtil;
 
 public class ECustomer {
 	public Integer id;
@@ -67,14 +71,42 @@ public class ECustomer {
 	public Integer creditlimitdays;
 	public Integer defaultinclusivetax;
 
-	
-	public static List<ECustomer> readAll(ResultSet rs) throws SQLException {
-		List<ECustomer> result = new ArrayList<ECustomer>();
-		while (rs.next()) {
-			result.add(ECustomer.read(rs));
+	public String tax1name;
+	public String tax2name;
+	public String currencyname;
+	public String termname;
+	public String salesmanname;
+	public String customertypename;
+	public String taxtypename;
+
+	public static List<ECustomer> readAll(Connection conn) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM persondata WHERE persontype = 0 ");
+
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			ResultSet rs = ps.executeQuery();
+
+			List<ECustomer> result = new ArrayList<ECustomer>();
+			while (rs.next()) {
+				result.add(ECustomer.read(rs));
+			}
+
+			for (ECustomer cust : result) {
+				cust.tax1name = DbUtil.getTaxName(conn, cust.tax1id);
+				cust.tax2name = DbUtil.getTaxName(conn, cust.tax2id);
+				cust.currencyname = DbUtil.getCurrencyName(conn, cust.currencyid);
+				cust.termname = DbUtil.getTermsName(conn, cust.termsid);
+				cust.salesmanname = DbUtil.getSalesmanName(conn, cust.salesmanid);
+				cust.customertypename = DbUtil.getCustomerTypeName(conn, cust.customertypeid);
+				cust.taxtypename = DbUtil.getTaxTypeOutName(conn, cust.taxtype);
+			}
+
+			return result;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
 		}
-		
-		return result;
+
 	}
 
 	public static ECustomer read(ResultSet rs) throws SQLException {

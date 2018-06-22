@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import zabmtri.DbUtil;
+
 public class EItem {
 	public String itemno;
 	public String itemdescription;
@@ -91,22 +93,42 @@ public class EItem {
 	public Integer importduty_type;
 	public BigDecimal cukai_rate;
 	public Integer delivernostocksn;
+	
+	public String preferedvendorno;
+	public String categoryname;
+	
+	public List<EItemWhQuantity> whQuantity;
 
 	public static List<EItem> readAll(Connection conn, LocalDate asOf) {
 		try {
+			List<EItem> result = new ArrayList<EItem>();
+			
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT item.* FROM item ");
 			sql.append("WHERE item.itemtype IS NOT NULL ");
 			sql.append("ORDER BY item.itemno");
 
 			PreparedStatement ps = conn.prepareStatement(sql.toString());
-			// ps.setDate(1, Date.valueOf(asOf));
 
 			ResultSet rs = ps.executeQuery();
-
-			List<EItem> result = new ArrayList<EItem>();
 			while (rs.next()) {
 				result.add(EItem.read(rs));
+			}
+			
+			List<EWarehs> warehouseList = EWarehs.readAll(conn);
+			for (EItem item: result) {
+				item.preferedvendorno = DbUtil.getPersonNo(conn, item.preferedvendor);
+				item.categoryname = DbUtil.getItemCategoryName(conn, item.categoryid); 
+				
+				boolean isLeaf = (item.rgt - item.lft) == 1;
+				if (isLeaf) {
+					item.whQuantity = EItemWhQuantity.readAll(conn, item.itemno, warehouseList);
+				} else {
+					item.whQuantity = EItemWhQuantity.padZero(warehouseList);
+				}
+				
+				EItemWhQuantity.moveWarehouseToTop(item.whQuantity, item.warehouseid);
+				EItemWhQuantity.removeZeroExceptTop(item.whQuantity);
 			}
 
 			return result;
@@ -115,16 +137,7 @@ public class EItem {
 		}
 	}
 
-	public static List<EItem> readAll(ResultSet rs) throws SQLException {
-		List<EItem> result = new ArrayList<EItem>();
-		while (rs.next()) {
-			result.add(EItem.read(rs));
-		}
-
-		return result;
-	}
-
-	public static EItem read(ResultSet rs) throws SQLException {
+	private static EItem read(ResultSet rs) throws SQLException {
 		EItem entity = new EItem();
 		entity.itemno = rs.getString("itemno");
 		entity.itemdescription = rs.getString("itemdescription");

@@ -1,6 +1,8 @@
 package zabmtri;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +29,7 @@ public class DbUtil {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static String getNativeBranchCode(Connection conn) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement("SELECT branchcode FROM branchcodes where isnative = 1");
 		ResultSet rs = ps.executeQuery();
@@ -37,6 +39,17 @@ public class DbUtil {
 		}
 
 		throw new RuntimeException("Cannot get native branch");
+	}
+
+	public static String getOBE(Connection conn) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement("select GLACCOUNT from DEFACCNT where name = 'OPENING BALANCE EQUITY'");
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		} else {
+			return null;
+		}
 	}
 
 	public static String getPersonNo(Connection conn, Integer personid) throws SQLException {
@@ -76,6 +89,47 @@ public class DbUtil {
 		}
 
 		throw new RuntimeException("Cannot get personno for id " + personid);
+	}
+
+	public static Integer getCurrencyIdByName(Connection conn, String currencyname) throws SQLException {
+		if (currencyname == null || currencyname.isEmpty()) {
+			return null;
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT currencyid FROM currency where currencyname = ?");
+		ps.setString(1, currencyname);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			return rs.getInt(1);
+		}
+
+		return null;
+	}
+	
+	public static String getCurrencyName(Connection conn, int currencyid) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement("SELECT currencyname FROM currency where currencyid = ?");
+		ps.setInt(1, currencyid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get currency name for id " + currencyid);
+	}
+
+	public static BigDecimal getCurrencyRate(Connection conn, int currencyid) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement("SELECT exchangerate FROM currency where currencyid = ?");
+		ps.setInt(1, currencyid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getBigDecimal(1);
+		}
+
+		throw new RuntimeException("Cannot get currency rate for id " + currencyid);
 	}
 
 	public static String getArInvoiceNo(Connection conn, Integer arinvoiceid) throws SQLException {
@@ -129,6 +183,74 @@ public class DbUtil {
 
 		throw new RuntimeException("Cannot get warehs for warehouseid " + warehouseid);
 	}
+	
+	public static String getTaxCode(Connection conn, Integer taxid) throws SQLException {
+		if (taxid == null || taxid.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT taxcode FROM tax where taxid = ?");
+		ps.setInt(1, taxid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get tax for taxid " + taxid);
+	}
+	
+	public static String getTaxName(Connection conn, Integer taxid) throws SQLException {
+		if (taxid == null || taxid.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT taxname FROM tax where taxid = ?");
+		ps.setInt(1, taxid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get tax for taxid " + taxid);
+	}
+	
+	public static String getTaxTypeInName(Connection conn, Integer id) throws SQLException {
+		if (id == null || id.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT taxname FROM taxtype_in where id = ?");
+		ps.setInt(1, id);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get taxtype_in for id " + id);
+	}
+	
+	public static String getTaxTypeOutName(Connection conn, Integer id) throws SQLException {
+		if (id == null || id.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT taxname FROM taxtype_out where id = ?");
+		ps.setInt(1, id);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get taxtype_out for id " + id);
+	}
 
 	public static String getTermsName(Connection conn, Integer termid) throws SQLException {
 		if (termid == null || termid.equals(0)) {
@@ -163,6 +285,73 @@ public class DbUtil {
 
 		throw new RuntimeException("Cannot get shipment for shipid " + shipid);
 	}
+	
+	public static String getSalesmanName(Connection conn, Integer salesmanid) throws SQLException {
+		if (salesmanid == null || salesmanid.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT salesmanname FROM salesman WHERE salesmanid = ?");
+		ps.setInt(1, salesmanid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get salesman name for salesmanid " + salesmanid);
+	}
+	
+	public static String getCustomerTypeName(Connection conn, Integer customertypeid) throws SQLException {
+		if (customertypeid == null || customertypeid.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT typename FROM custtype WHERE customertypeid = ?");
+		ps.setInt(1, customertypeid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get custtype typename for customertypeid " + customertypeid);
+	}
+	
+	public static String getItemCategoryName(Connection conn, Integer categoryid) throws SQLException {
+		if (categoryid == null || categoryid.equals(0)) {
+			return "";
+		}
+
+		PreparedStatement ps = conn.prepareStatement("SELECT name FROM itemcategory where categoryid = ?");
+		ps.setInt(1, categoryid);
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return rs.getString(1);
+		}
+
+		throw new RuntimeException("Cannot get item category name for categoryid " + categoryid);
+	}
+	
+	public static BigDecimal getItemTotalCost(Connection conn, String itemno) throws SQLException {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select TOTCOST from GET_COST_BY_COSTINGMETHOD(?, ?, 1)");
+
+		PreparedStatement ps = conn.prepareStatement(sql.toString());
+		ps.setString(1, itemno);
+		ps.setDate(2, Date.valueOf(AppData.dateCutOff));
+
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			return rs.getBigDecimal(1);
+		}
+		
+		throw new RuntimeException("Cannot get item total cost for " + itemno);
+	}
 
 	public static void closeQuietly(Connection closeable) {
 		if (closeable == null) {
@@ -176,5 +365,6 @@ public class DbUtil {
 			e.printStackTrace();
 		}
 	}
+	
 
 }

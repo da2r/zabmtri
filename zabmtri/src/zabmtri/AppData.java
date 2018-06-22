@@ -11,6 +11,7 @@ import zabmtri.entity.EArPmt;
 import zabmtri.entity.ECustomer;
 import zabmtri.entity.EGlAccount;
 import zabmtri.entity.EItem;
+import zabmtri.entity.EItemCategory;
 import zabmtri.entity.EItemSn;
 import zabmtri.entity.EJv;
 import zabmtri.entity.EVendor;
@@ -33,6 +34,9 @@ public class AppData {
 
 	public static List<EItem> alphaItem;
 	public static List<EItem> betaItem;
+	
+	public static List<EItemCategory> alphaItemCategory;
+	public static List<EItemCategory> betaItemCategory;
 	
 	public static List<EItemSn> itemSn;
 
@@ -57,8 +61,8 @@ public class AppData {
 
 	public static IMainForm mainForm;
 
-	public static String branchCode = null; // BUMMER!!!
-
+	public static String branchCode;
+	public static String obe;
 
 	public static String getBetaCurrencyName(String glaccount) {
 		for (EGlAccount account : betaGlAccount) {

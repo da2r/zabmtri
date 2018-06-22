@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,14 +66,9 @@ public class CompareVendor {
 	private void loadData() throws SQLException {
 		data = new ArrayList<Pair<EVendor>>();
 		
-		ResultSet rs;
-		String sql = "SELECT First 1 * FROM persondata WHERE persontype = 1";
 		
-		rs = AppData.alpha.createStatement().executeQuery(sql);
-		List<EVendor> alpha = EVendor.readAll(rs);
-
-		rs = AppData.beta.createStatement().executeQuery(sql);
-		List<EVendor> beta = EVendor.readAll(rs);
+		List<EVendor> alpha = new ArrayList<EVendor>(AppData.alphaVendor);
+		List<EVendor> beta = new ArrayList<EVendor>(AppData.betaVendor);
 
 		for (EVendor a : alpha) {
 			Pair<EVendor> p = new Pair<EVendor>();
