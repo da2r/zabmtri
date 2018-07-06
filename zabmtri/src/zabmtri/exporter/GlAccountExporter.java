@@ -16,14 +16,20 @@ import zabmtri.Util;
 import zabmtri.entity.EGlAccount;
 
 public class GlAccountExporter {
-	
+
 	public void execute() {
+		doExecute(AppData.glAccount, Util.glAccountOutputFile());
+		doExecute(AppData.alphaGlAccount, Util.glAccountAlphaOutputFile());
+		doExecute(AppData.betaGlAccount, Util.glAccountBetaOutputFile());
+	}
+
+	private void doExecute(List<EGlAccount> dataList, String outputFileName) {
 		try {
-			Path path = Paths.get(getOutputFileName());
+			Path path = Paths.get(outputFileName);
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EGlAccount data : AppData.betaGlAccount) {
+				for (EGlAccount data : dataList) {
 					csvPrinter.printRecord(getRow(data));
 				}
 
@@ -45,8 +51,8 @@ public class GlAccountExporter {
 		header.add("Mata Uang");
 		header.add("Saldo");
 		header.add("Per Tgl");
-		header.add("Akun induk");
 		header.add("Catatan");
+		header.add("Akun induk");
 
 		String[] arr = header.toArray(new String[header.size()]);
 		return CSVFormat.DEFAULT.withHeader(arr);
@@ -60,17 +66,17 @@ public class GlAccountExporter {
 		result.add(data.currencyname);
 		result.add(Util.formatNumber(data.balance));
 		result.add(Util.formatDateCsv(AppData.dateCutOff));
-		result.add(data.parentaccount);
 		result.add(data.memo);
+		result.add(data.parentaccount);
 
 		return result;
 	}
-	
+
 	private String asAccountTypeName(Integer accounttype) {
 		if (accounttype == null) {
 			throw new RuntimeException("Error accounttype is null");
 		}
-		
+
 		final String CASHBANK_ACCTYPE = "Kas Bank";
 		final String AR_ACCTYPE = "Akun Piutang";
 		final String INV_ACCTYPE = "Persediaan";
@@ -94,7 +100,4 @@ public class GlAccountExporter {
 		return ACCTYPE[accounttype - 6];
 	}
 
-	private String getOutputFileName() {
-		return Util.glAccountOutputFile();
-	}
 }

@@ -39,8 +39,13 @@ public class ItemSnImporter {
 				String serialnumber = rec.get(1);
 				Date expireddate = Util.parseDate(rec.get(2));
 				BigDecimal quantity = Util.parseNumber(rec.get(3));
-				
-				doImport(serialnumber, expireddate, quantity);
+				try {
+					doImport(serialnumber, expireddate, quantity);
+				} catch (Throwable t) {
+					Util.printOutput("Gagal memasukan nomor seri " + serialnumber + " ke barang " + itemno);
+					Util.printOutput(Util.getStackTrace(t));
+					
+				}
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -92,8 +97,9 @@ public class ItemSnImporter {
 	}
 
 	private boolean isSerialNumberExists(String serialnumber) throws SQLException {
-		PreparedStatement ps = AppData.target.prepareStatement("select 1 from SERIALNUMBERS where SERIALNUMBER = ?");
+		PreparedStatement ps = AppData.target.prepareStatement("select 1 from SERIALNUMBERS where SERIALNUMBER = ? and ITEMNO = ?");
 		ps.setString(1, serialnumber);
+		ps.setString(2, current);
 
 		ResultSet rs = ps.executeQuery();
 		return rs.next();

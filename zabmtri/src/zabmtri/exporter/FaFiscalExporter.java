@@ -11,10 +11,11 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import zabmtri.AppData;
 import zabmtri.Util;
-import zabmtri.entity.EItemSn;
+import zabmtri.entity.EFaFiscal;
 
-public abstract class ItemSnExporter {
+public class FaFiscalExporter {
 
 	public void execute() {
 		try {
@@ -22,11 +23,8 @@ public abstract class ItemSnExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				List<EItemSn> listData = getData();
-				if (listData != null) {
-					for (EItemSn data : listData) {
-						csvPrinter.printRecord(getRow(data));
-					}
+				for (EFaFiscal data : AppData.faFiscal) {
+					csvPrinter.printRecord(getRow(data));
 				}
 
 				csvPrinter.flush();
@@ -41,26 +39,38 @@ public abstract class ItemSnExporter {
 
 	private CSVFormat getHeader() {
 		ArrayList<String> header = new ArrayList<String>();
-		header.add("No. Barang");
-		header.add("Nomor Seri");
-		header.add("Tgl. Expire");
-		header.add("Kuantitas");
+		header.add("Gol. Aktiva Tetap Pajak");
+		header.add("Metode Penyusutan Pajak");
+		header.add("Umur Ekonomis Pajak");
 
 		String[] arr = header.toArray(new String[header.size()]);
 		return CSVFormat.DEFAULT.withHeader(arr);
 	}
 
-	private Iterable<?> getRow(EItemSn data) {
+	private Iterable<?> getRow(EFaFiscal data) {
 		List<Object> result = new ArrayList<Object>();
-		result.add(data.itemno);
-		result.add(data.serialnumber);
-		result.add(data.expireddate);
-		result.add(Util.formatNumber(data.quantity));
 
+		result.add(data.fafisdesc);
+		result.add(asDeprMethodDesc(data.deprmethod));
+		result.add(Util.formatNumber(data.fisestlife));
 		return result;
 	}
-	
-	protected abstract List<EItemSn> getData();
-	
-	protected abstract String getOutputFileName();
+
+	private String asDeprMethodDesc(int value) {
+		if (value == 10) {
+			return "Tidak terdepresiasi";
+		} else if (value == 11) {
+			return "Metode Garis Lurus";
+		} else if (value == 12) {
+			return "Metode Angka Tahun";
+		} else if (value == 13) {
+			return "Metode Saldo Menurun";
+		}
+
+		return "" + value;
+	}
+
+	private String getOutputFileName() {
+		return Util.faFiscalOutputFile();
+	}
 }

@@ -40,7 +40,7 @@ public class EGlAccount {
 			sql.append("LEFT JOIN get_saldoaccount (glaccnt.glaccount, ? , current_date) ON glaccnt.glaccount = get_saldoaccount.glaccount ");
 			sql.append("LEFT JOIN get_crdr (glaccnt.glaccount, get_saldoaccount.balance, glaccnt.ACCOUNTTYPE) ON glaccnt.glaccount = get_crdr.glaccount ");
 			sql.append("WHERE glaccnt.accounttype is not null ");
-			sql.append("ORDER BY glaccnt.glaccount ");
+			sql.append("ORDER BY glaccnt.lft ");
 
 			PreparedStatement ps = conn.prepareStatement(sql.toString());
 			ps.setDate(1, Date.valueOf(asOf));
@@ -50,6 +50,12 @@ public class EGlAccount {
 			List<EGlAccount> result = new ArrayList<EGlAccount>();
 			while (rs.next()) {
 				result.add(EGlAccount.read(rs));
+			}
+			
+			for (EGlAccount row : result ){
+				if ((row.rgt - row.lft) > 1) {
+					row.balance = BigDecimal.ZERO;
+				}
 			}
 
 			return result;

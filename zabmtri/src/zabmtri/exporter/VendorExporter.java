@@ -13,6 +13,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 import zabmtri.AppData;
 import zabmtri.Util;
+import zabmtri.entity.EOwingPi;
 import zabmtri.entity.EVendor;
 
 public class VendorExporter {
@@ -23,8 +24,15 @@ public class VendorExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EVendor data : AppData.alphaVendor) {
-					csvPrinter.printRecord(getRow(data));
+				for (EVendor data : AppData.vendor) {
+					List<EOwingPi> owing = AppData.getOwingPi(data.id);
+					if (owing == null || owing.size() == 0) {
+						csvPrinter.printRecord(getRow(data, null));
+					} else {
+						for (EOwingPi ob : owing) {
+							csvPrinter.printRecord(getRow(data, ob));
+						}
+					}
 				}
 
 				csvPrinter.flush();
@@ -39,8 +47,8 @@ public class VendorExporter {
 
 	private CSVFormat getHeader() {
 		ArrayList<String> header = new ArrayList<String>();
-		header.add("No. Pelanggan");
-		header.add("Nama Pelanggan");
+		header.add("No. Pemasok");
+		header.add("Nama Pemasok");
 		header.add("Alamat 1");
 		header.add("Alamat 2");
 		header.add("Alamat Pajak 1");
@@ -60,7 +68,6 @@ public class VendorExporter {
 		header.add("No PKP");
 		header.add("Tipe Pajak");
 		header.add("Termasuk Pajak");
-		header.add("Default Diskon");
 		header.add("Saldo Awal");
 		header.add("Mata Uang");
 		header.add("Syarat");
@@ -108,7 +115,7 @@ public class VendorExporter {
 		return CSVFormat.DEFAULT.withHeader(arr);
 	}
 
-	private Iterable<?> getRow(EVendor data) {
+	private Iterable<?> getRow(EVendor data, EOwingPi ob) {
 		List<Object> result = new ArrayList<Object>();
 		result.add(data.personno);
 		result.add(data.name);
@@ -131,14 +138,13 @@ public class VendorExporter {
 		result.add(data.tax2exemptionno);
 		result.add(data.taxtypename);
 		result.add(Util.booleanText(data.defaultinclusivetax));
-		result.add(data.defaultdisc);
-		result.add(0); // result.add(data.openbal);
+		result.add(ob == null ? 0 : Util.formatNumber(ob.owing)); // result.add(data.openbal);
 		result.add(data.currencyname);
 		result.add(data.termname);
 		result.add(data.defaultinvdescription);
-		result.add(data.notes);
-		result.add(Util.formatDateCsv(AppData.dateCutOff));
-		result.add(""); // result.add(data.invoiceob);
+		result.add(Util.escapeNewLine(data.notes));
+		result.add(ob == null ? Util.formatDateCsv(AppData.dateCutOff) : Util.formatDateCsv(ob.invoicedate));
+		result.add(ob == null ? "" : ob.invoiceno); // result.add(data.invoiceob);
 
 		return result;
 	}

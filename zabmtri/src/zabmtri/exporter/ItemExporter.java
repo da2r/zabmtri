@@ -24,7 +24,7 @@ public class ItemExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EItem data : AppData.alphaItem) {
+				for (EItem data : AppData.item) {
 					for (EItemWhQuantity wqty : data.whQuantity) {
 						csvPrinter.printRecord(getRow(data, wqty));
 					}
@@ -73,17 +73,17 @@ public class ItemExporter {
 		header.add("Akun HPP");
 		header.add("Akun Return Pembelian");
 		header.add("Akun Belum Tertagih");
-		header.add("");
-		header.add("Kolom Cadangan 1");
-		header.add("Kolom Cadangan 2");
-		header.add("Kolom Cadangan 3");
-		header.add("Kolom Cadangan 4");
-		header.add("Kolom Cadangan 5");
-		header.add("Kolom Cadangan 6");
-		header.add("Kolom Cadangan 7");
-		header.add("Kolom Cadangan 8");
-		header.add("Kolom Cadangan 9");
-		header.add("Kolom Cadangan 10");
+		header.add("Goods In Transit Account");
+//		header.add("Kolom Cadangan 1");
+//		header.add("Kolom Cadangan 2");
+//		header.add("Kolom Cadangan 3");
+//		header.add("Kolom Cadangan 4");
+//		header.add("Kolom Cadangan 5");
+//		header.add("Kolom Cadangan 6");
+//		header.add("Kolom Cadangan 7");
+//		header.add("Kolom Cadangan 8");
+//		header.add("Kolom Cadangan 9");
+//		header.add("Kolom Cadangan 10");
 		header.add("Catatan");
 		header.add("Barang Induk");
 		header.add("Pakai No Seri");
@@ -164,12 +164,12 @@ public class ItemExporter {
 		List<Object> result = new ArrayList<Object>();
 
 		result.add(data.itemno);
-		result.add(data.itemdescription);
+		result.add(Util.removeNewLine(data.itemdescription));
 		result.add(asItemTypeName(data.itemtype));
 		result.add(data.categoryname);
 		if (wqty != null) {
-			result.add(wqty.quantity);
-			result.add(wqty.cost);
+			result.add(Util.formatNumber(wqty.quantity));
+			result.add(Util.formatNumber(wqty.cost));
 			result.add(wqty.warehousename);
 		} else {
 			result.add("0");
@@ -180,18 +180,18 @@ public class ItemExporter {
 		result.add(data.unit1);
 		result.add(data.unit2);
 		result.add(data.unit3);
-		result.add(data.ratio2);
-		result.add(data.ratio3);
+		result.add(Util.formatNumber(data.ratio2));
+		result.add(Util.formatNumber(data.ratio3));
 		result.add(data.unitcontrol);
-		result.add(data.unitprice);
-		result.add(data.unitprice2);
-		result.add(data.unitprice3);
-		result.add(data.unitprice4);
-		result.add(data.unitprice5);
+		result.add(Util.formatNumber(data.unitprice));
+		result.add(Util.formatNumber(data.unitprice2));
+		result.add(Util.formatNumber(data.unitprice3));
+		result.add(Util.formatNumber(data.unitprice4));
+		result.add(Util.formatNumber(data.unitprice5));
 		result.add(data.discpc);
 		result.add(data.taxcodes);
-		result.add(data.minimumqty);
-		result.add(data.preferedvendorno);
+		result.add(Util.formatNumber(data.minimumqty));
+		result.add(data.preferedvendorname);
 		result.add(data.ptaxcodes);
 		result.add(data.inventoryglaccnt);
 		result.add(data.salesglaccnt);
@@ -199,30 +199,30 @@ public class ItemExporter {
 		result.add(data.salesdiscountaccnt);
 		result.add(data.cogsglaccnt);
 		result.add(data.purchaseretglaccnt);
+		result.add(data.unbilledaccount);
 		result.add(data.goodstransitaccnt);
-		result.add(data.goodstransitaccnt);
-		result.add(data.reserved1);
-		result.add(data.reserved2);
-		result.add(data.reserved3);
-		result.add(data.reserved4);
-		result.add(data.reserved5);
-		result.add(data.reserved6);
-		result.add(data.reserved7);
-		result.add(data.reserved8);
-		result.add(data.reserved9);
-		result.add(data.reserved10);
-		result.add(data.notes);
+//		result.add(data.reserved1);
+//		result.add(data.reserved2);
+//		result.add(data.reserved3);
+//		result.add(data.reserved4);
+//		result.add(data.reserved5);
+//		result.add(data.reserved6);
+//		result.add(data.reserved7);
+//		result.add(data.reserved8);
+//		result.add(data.reserved9);
+//		result.add(data.reserved10);
+		result.add(Util.escapeNewLine(data.notes));
 		result.add(data.parentitem);
 		result.add(Util.booleanText(data.managesn));
-		result.add(Util.booleanText(data.forcesn));
-		result.add(Util.booleanText(data.delivernostocksn));
+		result.add(Util.booleanText(false)); //data.forcesn
+		result.add(Util.booleanText(false)); // data.delivernostocksn
 		result.add(asSerialNumberTypeName(data.serialnumbertype));
 		result.add(Util.booleanText(data.manageexpired));
-		result.add(data.weight);
-		result.add(data.deliveryleadtime);
-		result.add(data.dimheight);
-		result.add(data.dimwidth);
-		result.add(data.dimdepth);
+		result.add(Util.formatNumber(data.weight));
+		result.add(Util.formatNumber(data.deliveryleadtime));
+		result.add(Util.formatNumber(data.dimheight));
+		result.add(Util.formatNumber(data.dimwidth));
+		result.add(Util.formatNumber(data.dimdepth));
 
 		return result;
 	}

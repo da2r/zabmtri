@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVPrinter;
 import zabmtri.AppData;
 import zabmtri.Util;
 import zabmtri.entity.ECustomer;
+import zabmtri.entity.EOwingSi;
 
 public class CustomerExporter {
 
@@ -23,8 +24,16 @@ public class CustomerExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (ECustomer data : AppData.alphaCustomer) {
-					csvPrinter.printRecord(getRow(data));
+				for (ECustomer data : AppData.customer) {
+
+					List<EOwingSi> owing = AppData.getOwingSi(data.id);
+					if (owing == null || owing.size() == 0) {
+						csvPrinter.printRecord(getRow(data, null));
+					} else {
+						for (EOwingSi ob : owing) {
+							csvPrinter.printRecord(getRow(data, ob));
+						}
+					}
 				}
 
 				csvPrinter.flush();
@@ -113,7 +122,7 @@ public class CustomerExporter {
 		return CSVFormat.DEFAULT.withHeader(arr);
 	}
 
-	private Iterable<?> getRow(ECustomer data) {
+	private Iterable<?> getRow(ECustomer data, EOwingSi ob) {
 		List<Object> result = new ArrayList<Object>();
 		result.add(data.personno);
 		result.add(data.name);
@@ -137,18 +146,18 @@ public class CustomerExporter {
 		result.add(data.taxtypename);
 		result.add(Util.booleanText(data.defaultinclusivetax));
 		result.add(data.defaultdisc);
-		result.add(data.creditlimit);
+		result.add(Util.formatNumber(data.creditlimit));
 		result.add(data.creditlimitdays);
 		result.add(data.pricelevel);
-		result.add(0); // result.add(data.openbal);
+		result.add(ob == null ? 0 : Util.formatNumber(ob.owing)); // result.add(data.openbal);
 		result.add(data.currencyname);
 		result.add(data.termname);
 		result.add(data.salesmanname);
 		result.add(data.customertypename);
 		result.add(Util.booleanText(data.printstatement));
-		result.add(data.notes);
-		result.add(Util.formatDateCsv(AppData.dateCutOff));
-		result.add(""); // result.add(data.invoiceob);
+		result.add(Util.escapeNewLine(data.notes));
+		result.add(ob == null ? Util.formatDateCsv(AppData.dateCutOff) : Util.formatDateCsv(ob.invoicedate));
+		result.add(ob == null ? "" : ob.invoiceno); // result.add(data.invoiceob);
 
 		return result;
 	}

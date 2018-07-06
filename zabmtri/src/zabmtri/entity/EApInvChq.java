@@ -28,6 +28,8 @@ public class EApInvChq {
 	public BigDecimal pph23fiscalrate;
 
 	public String apinvoiceno;
+	
+	public List<EApInvChqDisc> writeoff;
 
 	public static List<EApInvChq> readAll(Connection conn, int chequeid) {
 		try {
@@ -48,6 +50,7 @@ public class EApInvChq {
 
 			for (EApInvChq row : result) {
 				row.apinvoiceno = DbUtil.getApInvoiceNo(conn, row.apinvoiceid);
+				row.writeoff = EApInvChqDisc.readAll(conn, row.invchqid);
 			}
 
 			return result;

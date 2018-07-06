@@ -80,7 +80,7 @@ public class EVendor {
 	public static List<EVendor> readAll(Connection conn) {
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM persondata WHERE persontype = 1 ");
+			sql.append("SELECT * FROM persondata WHERE persontype = 1 ORDER BY personno ");
 
 			PreparedStatement ps = conn.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();

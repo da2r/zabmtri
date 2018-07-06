@@ -26,6 +26,8 @@ public class EArInvPmt {
 	public BigDecimal pph23fiscalrate;
 
 	public String arinvoiceno;
+	
+	public List<EArInvPmtDisc> writeoff;
 
 	public static List<EArInvPmt> readAll(Connection conn, int paymentid) {
 		try {
@@ -46,6 +48,7 @@ public class EArInvPmt {
 
 			for (EArInvPmt row : result) {
 				row.arinvoiceno = DbUtil.getArInvoiceNo(conn, row.arinvoiceid);
+				row.writeoff = EArInvPmtDisc.readAll(conn, row.invpmtid);
 			}
 
 			return result;

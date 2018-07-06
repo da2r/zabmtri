@@ -16,7 +16,7 @@ public class DevEntityCoder {
 
 		Statement stm = conn.createStatement();
 		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT First 1 * FROM ApInvDet ");
+		sb.append("SELECT First 1 * FROM FIXASSET ");
 		ResultSet rs = stm.executeQuery(sb.toString());
 
 		ResultSetMetaData metadata = rs.getMetaData();

@@ -15,7 +15,7 @@ public class JvExporter extends BaseExport {
 	public void execute() {
 		Node nmexml = doc.createElement("NMEXML");
 		doc.appendChild(nmexml);
-		addAttr(nmexml, "EximID", "");
+		addAttr(nmexml, "EximID", "1");
 		addAttr(nmexml, "BranchCode", AppData.branchCode);
 		addAttr(nmexml, "ACCOUNTANTCOPYID", "");
 
@@ -50,7 +50,7 @@ public class JvExporter extends BaseExport {
 				transDetail.appendChild(node("PRIMEAMOUNT", det.primeamount));
 				transDetail.appendChild(node("TXDATE", det.txdate));
 				transDetail.appendChild(node("POSTED", det.posted));
-				transDetail.appendChild(node("CURRENCYNAME", AppData.getBetaCurrencyName(det.glaccount)));
+				transDetail.appendChild(node("CURRENCYNAME", AppData.getAlphaCurrencyName(det.glaccount)));
 			}
 		}
 
@@ -92,7 +92,7 @@ public class JvExporter extends BaseExport {
 	}
 	
 	protected List<EJv> getDataList() {
-		return AppData.betaJv;
+		return AppData.alphaJv;
 	}
 
 	protected String getTransKey() {

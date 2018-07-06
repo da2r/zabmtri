@@ -95,6 +95,7 @@ public class EItem {
 	public Integer delivernostocksn;
 	
 	public String preferedvendorno;
+	public String preferedvendorname;
 	public String categoryname;
 	
 	public List<EItemWhQuantity> whQuantity;
@@ -105,8 +106,8 @@ public class EItem {
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT item.* FROM item ");
-			sql.append("WHERE item.itemtype IS NOT NULL ");
-			sql.append("ORDER BY item.itemno");
+			sql.append("WHERE item.itemtype IS NOT NULL AND item.itemno <> '0' AND item.itemno <> '-1'");
+			sql.append("ORDER BY item.lft");
 
 			PreparedStatement ps = conn.prepareStatement(sql.toString());
 
@@ -118,6 +119,7 @@ public class EItem {
 			List<EWarehs> warehouseList = EWarehs.readAll(conn);
 			for (EItem item: result) {
 				item.preferedvendorno = DbUtil.getPersonNo(conn, item.preferedvendor);
+				item.preferedvendorname = DbUtil.getPersonName(conn, item.preferedvendor);
 				item.categoryname = DbUtil.getItemCategoryName(conn, item.categoryid); 
 				
 				boolean isLeaf = (item.rgt - item.lft) == 1;

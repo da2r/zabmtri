@@ -31,7 +31,7 @@ public class CompareVendor {
 		try {
 			Workbook wb = new XSSFWorkbook();
 
-			Sheet sheet = wb.createSheet("Barang");
+			Sheet sheet = wb.createSheet("Pemasok");
 
 			// sheet.setColumnWidth(0, 6000);
 
@@ -65,8 +65,7 @@ public class CompareVendor {
 
 	private void loadData() throws SQLException {
 		data = new ArrayList<Pair<EVendor>>();
-		
-		
+
 		List<EVendor> alpha = new ArrayList<EVendor>(AppData.alphaVendor);
 		List<EVendor> beta = new ArrayList<EVendor>(AppData.betaVendor);
 
@@ -84,10 +83,14 @@ public class CompareVendor {
 		}
 
 		for (EVendor b : beta) {
-			Pair<EVendor> p = new Pair<EVendor>();
-			p.beta = b;
-			data.add(p);
+			if (find(alpha, b.personno) == null) {
+				Pair<EVendor> p = new Pair<EVendor>();
+				p.beta = b;
+				data.add(p);
+			}
 		}
+
+		AppData.vendor = Pair.join(data);
 	}
 
 	private EVendor find(List<EVendor> list, String value) {

@@ -86,6 +86,11 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 		setSize(800, 500);
 		setLayout(null);
 		setVisible(true);
+		
+		StringBuilder startMsg = new StringBuilder();
+		
+		output.append(startMsg.toString());
+		
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -120,14 +125,13 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 			} else if (e.getSource() == btnStart) {
 				printOutput("Membaca data sumber, harap menunggu ...");
 
-				String message = "Mulai proses penggabungan Database ?\n\nPerhatian: Proses mungkin membutuhkan waktu yang lama";
-				int n = JOptionPane.showConfirmDialog(this, message, "Konfirmasi", JOptionPane.YES_NO_OPTION);
-				if (n != 0) {
-					printOutput("Proses dibatalkan");
-					return;
+				btnStart.setEnabled(false);
+				try {
+					JOptionPane.showMessageDialog(this, "Proses penggabungan database akan dimulai.\n\nPerhatian: Proses mungkin membutuhkan waktu yang lama");
+					Executor.executeMerge();
+				} finally {
+					btnStart.setEnabled(true);
 				}
-
-				Executor.executeMerge();
 
 				showImport();
 				nextImportStep();
@@ -213,25 +217,27 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportWarehouse() {
 		step = ImportStep.Warehouse;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 2 - Gudang");
 		sb.append("\n");
 		sb.append("\n");
 		sb.append(String.format("Program ini akan memasukan data gudang dari file \"%s\" ke Database tujuan", Util.warehsOutputFile()));
+		sb.append(String.format("Program ini akan memasukan data penjual dari file \"%s\" ke Database tujuan", Util.salesmanOutputFile()));
 		sb.append("\n");
 		sb.append("Harap menunggu ..");
 		sb.append("\n");
 		sb.append("\n");
 		output.setText(sb.toString());
-		
-		JOptionPane.showMessageDialog(this, "Program ini akan memasukan Gudang ke Database tujuan.");
+
+		JOptionPane.showMessageDialog(this, "Program ini akan memasukan Gudang dan Penjual ke Database tujuan.");
 
 		Executor.executeImportWarehs();
+		Executor.executeImportSalesman();
 		printOutput("");
 		printOutput("Selesai memasukan data Gudang.");
-		
-		JOptionPane.showMessageDialog(this, "Selesai memasukan data Gudang. Klik tombol [Lanjutkan] untuk melanjutkan ke langkah berikutnya.");
+
+		JOptionPane.showMessageDialog(this, "Selesai memasukan data Gudang dan Penjual. Klik tombol [Lanjutkan] untuk melanjutkan ke langkah berikutnya.");
 	}
 
 	private void showImportVendor() {
@@ -268,9 +274,14 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportItem() {
 		step = ImportStep.Item;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 5 - Barang");
+		sb.append("\n");
+		sb.append("\n");
+		sb.append("Buka Database tujuan, masuk ke menu Daftar Kategori Barang dan pilih Impor.");
+		sb.append("\n");
+		sb.append(String.format("Gunakan file \"%s\" saat impor agar data Kategori Barang masuk ke database Tujuan", Util.itemCategoryOutputFile()));
 		sb.append("\n");
 		sb.append("\n");
 		sb.append("Buka Database tujuan, masuk ke menu Daftar Barang dan pilih Impor.");
@@ -284,7 +295,7 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportSerialNumber() {
 		step = ImportStep.SerialNumber;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 6 - Nomor Seri Barang");
 		sb.append("\n");
@@ -295,19 +306,23 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 		sb.append("\n");
 		sb.append("\n");
 		output.setText(sb.toString());
-		
-		JOptionPane.showMessageDialog(this, "Program ini akan memasukan data Nomor Seri Barang ke Database tujuan.");
-		
-		Executor.executeImportItemSn();
-		printOutput("");
-		printOutput("Selesai memasukan data Nomor Seri Barang.");
-		
+
+		btnNext.setEnabled(false);
+		try {
+			JOptionPane.showMessageDialog(this, "Program ini akan memasukan data Nomor Seri Barang ke Database tujuan.");
+			Executor.executeImportItemSn();
+			printOutput("");
+			printOutput("Selesai memasukan data Nomor Seri Barang.");
+		} finally {
+			btnNext.setEnabled(true);
+		}
+
 		JOptionPane.showMessageDialog(this, "Selesai memasukan data Nomor Seri Barang. Klik tombol [Lanjutkan] untuk melanjutkan ke langkah berikutnya.");
 	}
 
 	private void showImportJournalVoucher() {
 		step = ImportStep.JournalVoucher;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 7 - Jurnal Umum");
 		sb.append("\n");
@@ -323,7 +338,7 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportOtherPayment() {
 		step = ImportStep.OtherPayment;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 8 - Penerimaan Lain");
 		sb.append("\n");
@@ -339,7 +354,7 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportOtherDeposit() {
 		step = ImportStep.OtherDeposit;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 9 - Pendapatan Lain");
 		sb.append("\n");
@@ -355,7 +370,7 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportPurchase() {
 		step = ImportStep.Purchase;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 10 - Pembelian");
 		sb.append("\n");
@@ -371,7 +386,7 @@ public class MainForm extends Frame implements IMainForm, ActionListener {
 
 	private void showImportSales() {
 		step = ImportStep.Sales;
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Langkah 11 - Penjualan");
 		sb.append("\n");

@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EItemSn {
-	
+
 	public String itemno;
 	public String serialnumber;
 	public Date expireddate;
 	public BigDecimal quantity;
-	
+
 	public static List<EItemSn> readAll(Connection conn, LocalDate asOf) {
 		try {
 			StringBuilder sql = new StringBuilder();
@@ -45,6 +45,16 @@ public class EItemSn {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
+	}
+
+	public static EItemSn clone(EItemSn arg) {
+		EItemSn result = new EItemSn();
+		result.itemno = arg.itemno;
+		result.serialnumber = arg.serialnumber;
+		result.expireddate = arg.expireddate;
+		result.quantity = arg.quantity;
+
+		return result;
 	}
 
 }

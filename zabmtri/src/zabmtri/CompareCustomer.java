@@ -31,7 +31,7 @@ public class CompareCustomer {
 		try {
 			Workbook wb = new XSSFWorkbook();
 
-			Sheet sheet = wb.createSheet("Barang");
+			Sheet sheet = wb.createSheet("Pelanggan");
 
 			// sheet.setColumnWidth(0, 6000);
 
@@ -65,7 +65,7 @@ public class CompareCustomer {
 
 	private void loadData() throws SQLException {
 		data = new ArrayList<Pair<ECustomer>>();
-		
+
 		List<ECustomer> alpha = new ArrayList<ECustomer>(AppData.alphaCustomer);
 		List<ECustomer> beta = new ArrayList<ECustomer>(AppData.betaCustomer);
 
@@ -83,10 +83,14 @@ public class CompareCustomer {
 		}
 
 		for (ECustomer b : beta) {
-			Pair<ECustomer> p = new Pair<ECustomer>();
-			p.beta = b;
-			data.add(p);
+			if (find(alpha, b.personno) == null) {
+				Pair<ECustomer> p = new Pair<ECustomer>();
+				p.beta = b;
+				data.add(p);
+			}
 		}
+
+		AppData.customer = Pair.join(data);
 	}
 
 	private ECustomer find(List<ECustomer> list, String value) {

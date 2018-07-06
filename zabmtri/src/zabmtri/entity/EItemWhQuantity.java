@@ -44,32 +44,34 @@ public class EItemWhQuantity {
 				entry.warehouseid = warehouse.warehouseid;
 				entry.warehousename = warehouse.name;
 				entry.quantity = rs.getBigDecimal(1);
+				entry.cost = BigDecimal.ZERO;
 				result.add(entry);
 			}
 		}
 
-		BigDecimal totalcost = DbUtil.getItemTotalCost(conn, itemno);
+		BigDecimal totalquantity = calculateTotalQuantity(result);
+		if (totalquantity.compareTo(BigDecimal.ZERO) == 0) {
+			for (EItemWhQuantity e : result) {
+				e.quantity = BigDecimal.ZERO;
+			}
+		} else {
+			BigDecimal totalcost = DbUtil.getItemTotalCost(conn, itemno);
+			BigDecimal unitcost = totalcost.divide(totalquantity, 8, RoundingMode.HALF_UP);
 
-		BigDecimal totalquantity = BigDecimal.ZERO;
-		BigDecimal unitcost = BigDecimal.ZERO;
-		if (totalcost.compareTo(BigDecimal.ZERO) != 0) {
-			totalquantity = calculateTotalQuantity(result);
-			unitcost = totalcost.divide(totalquantity, 8, RoundingMode.HALF_UP);
-		}
+			// Distribute cost
+			BigDecimal distributed = BigDecimal.ZERO;
+			for (EItemWhQuantity e : result) {
+				e.cost = e.quantity.multiply(unitcost).setScale(4, RoundingMode.HALF_UP);
 
-		// Distribute cost
-		BigDecimal distributed = BigDecimal.ZERO;
-		for (EItemWhQuantity e : result) {
-			e.cost = e.quantity.multiply(unitcost).setScale(4, RoundingMode.HALF_UP);
+				distributed = distributed.add(e.cost);
+			}
 
-			distributed = distributed.add(e.cost);
-		}
-
-		// handle remaining value due to rounding
-		if (totalcost.compareTo(distributed) > 0) {
-			BigDecimal remaining = totalcost.subtract(distributed);
-			EItemWhQuantity last = result.get(result.size() - 1);
-			last.cost = last.cost.add(remaining);
+			// handle remaining value due to rounding
+			if (totalcost.compareTo(distributed) > 0) {
+				BigDecimal remaining = totalcost.subtract(distributed);
+				EItemWhQuantity last = result.get(result.size() - 1);
+				last.cost = last.cost.add(remaining);
+			}
 		}
 
 		return result;
@@ -107,7 +109,7 @@ public class EItemWhQuantity {
 				break;
 			}
 		}
-		
+
 		if (pos > -1) {
 			EItemWhQuantity el = list.remove(pos);
 			list.add(0, el);
@@ -116,15 +118,15 @@ public class EItemWhQuantity {
 
 	public static void removeZeroExceptTop(List<EItemWhQuantity> list) {
 		Iterator<EItemWhQuantity> it = list.iterator();
-		
+
 		if (it.hasNext()) {
 			// skip top element
 			it.next();
 		}
-		
+
 		while (it.hasNext()) {
 			EItemWhQuantity el = it.next();
-			
+
 			if (el.quantity.compareTo(BigDecimal.ZERO) == 0) {
 				it.remove();
 			}

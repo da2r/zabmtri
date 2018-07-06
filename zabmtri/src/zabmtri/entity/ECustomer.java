@@ -82,7 +82,7 @@ public class ECustomer {
 	public static List<ECustomer> readAll(Connection conn) {
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM persondata WHERE persontype = 0 ");
+			sql.append("SELECT * FROM persondata WHERE persontype = 0 ORDER BY personno ");
 
 			PreparedStatement ps = conn.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();

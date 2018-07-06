@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import zabmtri.AppData;
 import zabmtri.DbUtil;
 import zabmtri.Util;
 

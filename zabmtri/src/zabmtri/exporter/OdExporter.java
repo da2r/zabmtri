@@ -10,7 +10,7 @@ public class OdExporter extends JvExporter {
 	
 	@Override
 	protected List<EJv> getDataList() {
-		return AppData.betaOd;
+		return AppData.alphaOd;
 	}
 
 	@Override

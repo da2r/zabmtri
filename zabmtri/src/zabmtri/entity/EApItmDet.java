@@ -53,6 +53,7 @@ public class EApItmDet {
 	public Integer jobid;
 	
 	public String warehousename;
+	public String rino;
 
 	public List<ESnHistory> snhistory;
 
@@ -76,6 +77,7 @@ public class EApItmDet {
 			for (EApItmDet row : result) {
 				row.warehousename = DbUtil.getWarehouseName(conn, row.warehouseid);
 				row.snhistory = ESnHistory.readAll(conn, row.itemhistid);
+				row.rino = DbUtil.getApInvoiceNo(conn, row.riid);
 			}
 
 			return result;

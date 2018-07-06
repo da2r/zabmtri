@@ -23,7 +23,7 @@ public class WarehsExporter {
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			CSVPrinter csvPrinter = new CSVPrinter(writer, getHeader());
 			try {
-				for (EWarehs data : AppData.betaWarehs) {
+				for (EWarehs data : AppData.warehs) {
 					csvPrinter.printRecord(getRow(data));
 				}
 
